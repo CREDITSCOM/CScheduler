@@ -1,0 +1,245 @@
+﻿<!DOCTYPE html>
+<html>
+<head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Smart scheduler</title>
+
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.12.9/umd/popper.min.js" integrity="sha384-ApNbgh9B+Y1QKtv3Rn7W3mgPxhU9K/ScQsAP7hUibX39j7fakFPskvXusvfa0b4Q" crossorigin="anonymous"></script>
+    @Styles.Render("~/Content/css")
+    @Scripts.Render("~/bundles/modernizr")
+    @Scripts.Render("~/bundles/jquery")
+    @Scripts.Render("~/bundles/bootstrap")
+
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.9.0/css/all.min.css" rel="stylesheet">
+
+    <link href="~/Content/Gridmvc.css?v1" rel="stylesheet" />
+    <script src="~/Scripts/gridmvc.min.js?v2"></script>
+
+</head>
+<body>
+
+    <style>
+
+        .tool-bar {
+            margin-top: 10px;
+            margin-bottom: 5px;
+        }
+
+        .btn {
+            border-radius: 0;
+        }
+
+        .form-control {
+            border-radius: 0;
+            margin-top: -15px;
+            height: 40px;
+        }
+
+        .radio-label {
+            margin-right: 10px;
+            margin-left: 4px;
+        }
+
+        .save-btn-div {
+            text-align: right;
+        }
+
+        .delete-btn-div {
+            text-align: right;
+        }
+
+        .custom-control-label::before {
+            background-color: #ef0808 !important;
+        }
+
+        .custom-control-input:checked ~ .custom-control-label::before {
+            border-color: #168c31 !important;
+            background-color: #168c31 !important;
+        }
+
+        #navbarNavDropdown {
+            display: block !important;
+        }
+
+        .navbar-brand {
+            font-weight: bold;
+            font-size: x-large;
+            color: orange !important;
+        }
+
+        .navbar-nav {
+            float: right;
+        }
+
+        .control-label {
+            font-weight:600;
+            font-size: smaller;
+            z-index: 100;
+            background-color: white;
+            padding-right: 10px;
+            color: #063ead;
+        }
+
+        .body-content {
+            padding-top: 20px;
+        }
+
+        .btn-light {
+            color: #212529;
+            background-color: #f8f9fa;
+            border-color: #9c9c9c;
+        }
+
+        .btn-success {
+            color: #fff;
+            background-color: orange;
+            border-color: orange;
+        }
+
+            .btn-success:hover {
+                color: #fff;
+                background-color: #4888C2 !important;
+                border-color: #4888C2 !important;
+            }
+
+        .btn-danger {
+            color: #dc3545;
+            background-color: #ffffff;
+            border-color: #dc3545;
+        }
+
+            .btn-danger:hover {
+                color: #fff !important;
+            }
+
+        a {
+            color: dimgrey !important;
+        }
+
+        .push-right {
+            text-align: right;
+            float: right;
+        }
+
+        .page-item.active .page-link {
+            background-color: orange;
+            border-color: orange;
+        }
+
+        .job-is-active {
+            color: #168c31;
+        }
+
+        .job-is-not-active {
+            color: #ef0808;
+        }
+
+        .form-control:disabled, .form-control[readonly] {
+            background-color: transparent;
+            opacity: 1;
+        }
+
+    </style>
+
+    <nav class="navbar navbar-expand-lg navbar-inverse navbar-light bg-light navbar-fixed-top">
+        <div class="container">
+            <a class="navbar-brand" href="\Home\Index">
+                <span class="sr-only"></span>
+                <i class="fab fa-2x fa-earlybirds"></i> CScheduler
+            </a>
+            @*<button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarNavDropdown" aria-controls="navbarNavDropdown" aria-expanded="false" aria-label="Toggle navigation">
+                <span class="navbar-toggler-icon"></span>
+            </button>*@
+            <div class="collapse navbar-collapse" id="navbarNavDropdown">
+                <ul class="navbar-nav">
+
+                    @if (User.IsInRole("Admin"))
+                    {
+                        <li class="nav-item">
+                            <a class="nav-link" href="\User">
+                                <i class="fas fa-users-cog"></i> Users
+                            </a>
+                        </li>
+                        <li class="nav-item">
+                            <a class="nav-link" href="\CreditsNet">
+                                <i class="fas fa-network-wired"></i> Networks
+                            </a>
+                        </li>
+                    }
+                    @if (User.Identity.IsAuthenticated)
+                    {
+                        <li class="nav-item dropdown">
+                            <a class="nav-link dropdown" href="#" id="navbarDropdownMenuLink" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+                                <i class="fas fa-user-circle"></i> My account
+                            </a>
+                            <div class="dropdown-menu" aria-labelledby="navbarDropdownMenuLink">
+                                <a class="dropdown-item" href="\User\Edit?email=@User.Identity.Name"><i class="fas fa-edit"></i> Personal data</a>
+                                <a class="dropdown-item" href="\Account\LogOff"><i class="fas fa-sign-out-alt"></i> Log out</a>
+                            </div>
+                        </li>
+                    }
+                </ul>
+            </div>
+        </div>
+    </nav>
+
+    @*<div class="navbar navbar-inverse navbar-fixed-top">
+        <div class="container">
+            <div class="navbar-header">
+                <button type="button" class="navbar-toggle" data-toggle="collapse" data-target=".navbar-collapse">
+                    <span class="icon-bar"></span>
+                    <span class="icon-bar"></span>
+                    <span class="icon-bar"></span>
+                </button>
+                @Html.ActionLink("Application name", "Index", "Home", new { area = "" }, new { @class = "navbar-brand" })
+            </div>
+            <div class="navbar-collapse collapse">
+                <ul class="nav navbar-nav">
+                    <li>@Html.ActionLink("Home", "Index", "Home")</li>
+                    <li>@Html.ActionLink("About", "About", "Home")</li>
+                    <li>@Html.ActionLink("Contact", "Contact", "Home")</li>
+                </ul>
+                @Html.Partial("_LoginPartial")
+            </div>
+        </div>
+    </div>*@
+    <div class="container body-content">
+        @RenderBody()
+        <br />
+        <br />
+        <br />
+        <br />
+        <br />
+        <br />
+        <br />
+        <br />
+        <hr />
+        <footer>
+            <p>&copy; @DateTime.Now.Year - CScheduler</p>
+        </footer>
+    </div>
+
+    <!-- Modal -->
+    <div class="modal fade" id="exampleModal" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
+      <div class="modal-dialog" role="document">
+        <div class="modal-content">
+          <div class="modal-header">
+            <h5 class="modal-title" id="exampleModalLabel">Error</h5>
+            <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+              <span aria-hidden="true">&times;</span>
+            </button>
+          </div>
+          <div class="modal-body" id="modal-body">
+            ...
+          </div>
+          <div class="modal-footer">
+            <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    @RenderSection("scripts", required: false)
+</body>
+</html>

@@ -1,0 +1,67 @@
+﻿@model IEnumerable<CScheduler.Classes.Database.ApplicationUser>
+@using GridMvc.Html
+
+@{
+    ViewBag.Title = "Users";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+}
+
+<style>
+    .tool-bar {
+        margin-top: 10px;
+        margin-bottom: 5px;
+    }
+</style>
+
+<div class="tool-bar">
+    <button class="btn btn-light" onclick="editUser()"><i class="fas fa-edit"></i> Edit</button>
+    <button class="btn btn-light" onclick="deleteUser()"><i class="fas fa-times"></i></button>
+</div>
+
+@Html.Grid(Model).Columns(Columns =>
+{
+    Columns.Add(c => c.FirstName).Titled("First name").Sortable(true).Filterable(true);
+    Columns.Add(c => c.LastName).Titled("Last name").Sortable(true).Filterable(true);
+    Columns.Add(c => c.Email).Titled("Email").Sortable(true).Filterable(true);
+    Columns.Add(c => c.IsActivated).Titled("Activated").Sortable(true).Filterable(true);
+}).WithPaging(10).Sortable(true)
+
+<script>
+
+    var selectedRowId = 0;
+
+    $(function () {
+
+        $('table tr').click(function () {
+
+            selectedRowId = $(this).closest("tr").find('td:eq(2)').text();
+        });
+
+        $('table tr').dblclick(function () {
+
+            window.location.href = "/User/Edit?email=" + selectedRowId;
+        });
+
+    });
+
+    function editUser() {
+        if (selectedRowId != 0) {
+            window.location.href = "/User/Edit?email=" + selectedRowId;
+        }
+        else {
+            $('#modal-body').text('User is not selected!');
+            $('#exampleModal').modal('show');
+        }
+    }
+
+    function deleteUser () {
+        if (selectedRowId != 0) {
+            window.location.href = "/User/Delete?email=" + selectedRowId;
+        }
+        else {
+            $('#modal-body').text('User is not selected!');
+            $('#exampleModal').modal('show');
+        }
+    }
+
+</script>

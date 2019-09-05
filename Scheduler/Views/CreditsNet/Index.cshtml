@@ -1,0 +1,71 @@
+﻿@model IEnumerable<CScheduler.Classes.Database.CreditsNet>
+@using GridMvc.Html
+
+@{
+    ViewBag.Title = "Networks";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+}
+
+<style>
+    .tool-bar {
+        margin-top: 10px;
+        margin-bottom: 5px;
+    }
+</style>
+
+<div class="tool-bar">
+    <button class="btn btn-light" onclick="addNet()"><i class="fas fa-plus"></i> Add network</button>
+    <button class="btn btn-light" onclick="editNet()"><i class="fas fa-edit"></i></button>
+    <button class="btn btn-light" onclick="deleteNet()"><i class="fas fa-times"></i></button>
+</div>
+
+@Html.Grid(Model).Columns(Columns =>
+{
+    Columns.Add(c => c.ID).Titled("#").Sortable(true).Filterable(true).SetWidth(30);
+    Columns.Add(c => c.Name).Titled("Name").Sortable(true).Filterable(true);
+    Columns.Add(c => c.EndPoint).Titled("End point").Sortable(true).Filterable(true);
+}).WithPaging(10).Sortable(true)
+
+<script>
+
+    var selectedRowId = 0;
+
+    $(function () {
+
+        $('table tr').click(function () {
+
+            selectedRowId = $(this).closest("tr").find('td:eq(0)').text();
+        });
+
+        $('table tr').dblclick(function () {
+
+            window.location.href = "/CreditsNet/Edit?id=" + selectedRowId;
+        });
+
+    });
+
+    function addNet() {
+        window.location.href = "/CreditsNet/Edit?id=-1";
+    }
+
+    function editNet() {
+        if (selectedRowId != 0) {
+            window.location.href = "/CreditsNet/Edit?id=" + selectedRowId;
+        }
+        else {
+            $('#modal-body').text('Network is not selected!');
+            $('#exampleModal').modal('show');
+        }
+    }
+
+    function deleteNet () {
+        if (selectedRowId != 0) {
+            window.location.href = "/CreditsNet/Delete?id=" + selectedRowId;
+        }
+        else {
+            $('#modal-body').text('Network is not selected!');
+            $('#exampleModal').modal('show');
+        }
+    }
+
+</script>

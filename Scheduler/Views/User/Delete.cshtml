@@ -1,0 +1,52 @@
+﻿@model CScheduler.Classes.Database.ApplicationUser
+
+@{
+    ViewBag.Title = "Delete user";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+}
+
+<h3>Do you really want to delete this user?</h3>
+<div class="row">
+    <div class="col-md-6">
+        <dl class="dl-horizontal">
+            <dt>
+                @Html.DisplayNameFor(model => model.Email)
+            </dt>
+
+            <dd>
+                @Html.DisplayFor(model => model.Email)
+            </dd>
+
+            <dt>
+                @Html.DisplayNameFor(model => model.FirstName)
+            </dt>
+
+            <dd>
+                @Html.DisplayFor(model => model.FirstName)
+            </dd>
+
+            <dt>
+                @Html.DisplayNameFor(model => model.LastName)
+            </dt>
+
+            <dd>
+                @Html.DisplayFor(model => model.LastName)
+            </dd>
+
+        </dl>
+
+        @using (Html.BeginForm())
+        {
+            @Html.AntiForgeryToken()
+
+            <div class="row">
+                <div class="col-md-6">
+                    <a class="btn btn-light" href="/User/Index"><i class="fas fa-arrow-alt-circle-left"></i> Back</a>
+                </div>
+                <div class="col-md-6 delete-btn-div">
+                    <button type="submit" class="btn btn-danger"><i class="fas fa-times"></i> Delete</button>
+                </div>
+            </div>
+        }
+    </div>
+</div>

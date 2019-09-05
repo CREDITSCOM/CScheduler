@@ -1,0 +1,90 @@
+﻿@model IEnumerable<CScheduler.Classes.Database.SmartJob>
+@using GridMvc.Html
+
+@{
+    ViewBag.Title = "Smart scheduler";
+}
+
+<div class="tool-bar">
+    <button class="btn btn-light" onclick="addJob()" data-toggle="tooltip" data-placement="top" title="Add new task"><i class="fas fa-plus"></i> Add new task</button>
+    <button class="btn btn-light" onclick="executeJob()" data-toggle="tooltip" data-placement="top" title="Execute task"><i class="fas fa-rocket"></i></button>
+    <button class="btn btn-light" onclick="editJob()" data-toggle="tooltip" data-placement="top" title="Edit task"><i class="fas fa-edit"></i></button>
+    <button class="btn btn-light" onclick="deleteJob()" data-toggle="tooltip" data-placement="top" title="Delete task"><i class="fas fa-times"></i></button>
+</div>
+
+@*http://mvcgrid.net*@
+@Html.Grid(Model).Columns(Columns =>
+{
+    Columns.Add(o => o.ID, true);
+    Columns.Add()
+    .Sortable(true)
+    .Filterable(true)
+    .SetWidth(30)
+    .Titled("#")
+    .Sanitized(false)
+    .Encoded(false)
+    .RenderValueAs(x => x.IsActive == true ? "<div class='job-is-active'><i class='fas fa-circle'></i></div>" : "<div class='job-is-not-active'><i class='fas fa-circle'></i></div>");
+    Columns.Add(c => c.Name).Titled("Name").Sortable(true).Filterable(true);
+    Columns.Add(c => c.CreditsNet.Name).Titled("Network").Sortable(true).Filterable(true);
+    Columns.Add(c => c.Rule.Presentation).Titled("Trigger").Sortable(true).Filterable(true);
+    if (User.IsInRole("Admin"))
+    {
+        Columns.Add(c => c.CreatedBy.FullName).Titled("Author").Sortable(true).Filterable(true);
+    }
+}).WithPaging(10).Sortable(true)
+
+<script>
+
+    var selectedRowId = 0;
+
+    $(function () {
+
+        $('table tr').click(function () {
+
+            selectedRowId = $(this).closest("tr").find('td:eq(0)').text();
+        });
+
+        $('table tr').dblclick(function () {
+
+            window.location.href = "/Home/Edit?id=" + selectedRowId;
+        });
+
+        $('[data-toggle="tooltip"]').tooltip();
+
+    });
+
+    function addJob() {
+        window.location.href = "/Home/Edit?id=-1";
+    }
+
+    function executeJob() {
+        if (selectedRowId != 0) {
+            window.location.href = "/Home/Execute?id=" + selectedRowId;
+        }
+        else {
+            $('#modal-body').text('Task is not selected!');
+            $('#exampleModal').modal('show');
+        }
+    }
+
+    function editJob() {
+        if (selectedRowId != 0) {
+            window.location.href = "/Home/Edit?id=" + selectedRowId;
+        }
+        else {
+            $('#modal-body').text('Task is not selected!');
+            $('#exampleModal').modal('show');
+        }
+    }
+
+    function deleteJob() {
+        if (selectedRowId != 0) {
+            window.location.href = "/Home/Delete?id=" + selectedRowId;
+        }
+        else {
+            $('#modal-body').text('Task is not selected!');
+            $('#exampleModal').modal('show');
+        }
+    }
+
+</script>

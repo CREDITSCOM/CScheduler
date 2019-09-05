@@ -1,0 +1,95 @@
+﻿@model CScheduler.Classes.Database.ApplicationUser
+
+@{
+    ViewBag.Title = "Edit user";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+}
+
+<div class="row">
+    <div class="col-md-3">
+        &nbsp;
+    </div>
+    <div class="col-md-5">
+        @using (Html.BeginForm())
+        {
+            @Html.AntiForgeryToken()
+
+            <div>
+                <h4>Edit user</h4>
+                <hr />
+                @Html.ValidationSummary(true, "", new { @class = "text-danger" })
+                @Html.HiddenFor(model => model.Id)
+
+                <div class="form-group">
+                    @Html.LabelFor(model => model.Email, htmlAttributes: new { @class = "control-label" })
+                    <div class="">
+                        @Html.EditorFor(model => model.Email, new { htmlAttributes = new { disabled = "disabled", @class = "form-control" } })
+                        @Html.ValidationMessageFor(model => model.Email, "", new { @class = "text-danger" })
+                    </div>
+                </div>
+
+                <div class="form-group">
+                    @Html.LabelFor(model => model.FirstName, htmlAttributes: new { @class = "control-label" })
+                    <div class="">
+                        @Html.EditorFor(model => model.FirstName, new { htmlAttributes = new { @class = "form-control" } })
+                        @Html.ValidationMessageFor(model => model.FirstName, "", new { @class = "text-danger" })
+                    </div>
+                </div>
+
+                <div class="form-group">
+                    @Html.LabelFor(model => model.LastName, htmlAttributes: new { @class = "control-label" })
+                    <div class="">
+                        @Html.EditorFor(model => model.LastName, new { htmlAttributes = new { @class = "form-control" } })
+                        @Html.ValidationMessageFor(model => model.LastName, "", new { @class = "text-danger" })
+                    </div>
+                </div>
+                
+                <div class="form-group">
+                    @Html.LabelFor(model => model.PublicKey, htmlAttributes: new { @class = "control-label" })
+                    <div class="">
+                        @Html.EditorFor(model => model.PublicKey, new { htmlAttributes = new { disabled = "disabled", @class = "form-control" } })
+                        @Html.ValidationMessageFor(model => model.PublicKey, "", new { @class = "text-danger" })
+                    </div>
+                </div>
+
+                @if (User.IsInRole("Admin"))
+                {
+                    <div class="form-group">
+                        <div class="form-group" style="margin-top: 23px;">
+                            <div class="">
+                                <div class="custom-control custom-switch">
+                                    @Html.CheckBoxFor(model => model.IsActivated, new { @class = "custom-control-input" })
+                                    <label class="custom-control-label" for="IsActive">@Html.LabelFor(model => model.IsActivated)</label>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                }
+
+                <div class="row">
+                    <div class="col-md-4">
+                        @if (User.IsInRole("Admin"))
+                        {
+                            <a class="btn btn-light" href="/User/Index"><i class="fas fa-arrow-alt-circle-left"></i> Back</a>
+                        }
+                    </div>
+                    <div class="col-md-8 save-btn-div">
+                        @if (User.IsInRole("Admin"))
+                        {
+                            <a class="btn btn-light" href="/User/Delete?email=@Model.Email"><i class="fas fa-times"></i> Delete</a>
+                        }
+                        <button type="submit" class="btn btn-success"><i class="fas fa-save"></i> Save</button>
+                    </div>
+                </div>
+            </div>
+        }
+    </div>
+
+    <div class="col-md-3">
+        &nbsp;
+    </div>
+</div>
+
+@section Scripts {
+    @Scripts.Render("~/bundles/jqueryval")
+}

@@ -1,0 +1,44 @@
+﻿@model CScheduler.Classes.Database.CreditsNet
+
+@{
+    ViewBag.Title = "Delete network";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+}
+
+<h3>Do you really want to delete this network?</h3>
+<div class="row">
+    <div class="col-md-6">
+        <dl class="dl-horizontal">
+            <dt>
+                @Html.DisplayNameFor(model => model.Name)
+            </dt>
+
+            <dd>
+                @Html.DisplayFor(model => model.Name)
+            </dd>
+
+            <dt>
+                @Html.DisplayNameFor(model => model.EndPoint)
+            </dt>
+
+            <dd>
+                @Html.DisplayFor(model => model.EndPoint)
+            </dd>
+
+        </dl>
+
+        @using (Html.BeginForm())
+        {
+            @Html.AntiForgeryToken()
+
+            <div class="row">
+                <div class="col-md-6">
+                    <a class="btn btn-light" href="/CreditsNet/Index"><i class="fas fa-arrow-alt-circle-left"></i> Back</a>
+                </div>
+                <div class="col-md-6 delete-btn-div">
+                    <button type="submit" class="btn btn-danger"><i class="fas fa-times"></i> Delete</button>
+                </div>
+            </div>
+        }
+    </div>
+</div>
