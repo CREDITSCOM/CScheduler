@@ -16,3 +16,34 @@
 - На главой странице нажать кнопку "Добавить задачу" и заполнить все параметры задачи. 
 
 # API
+Для программного добавления задач можно испльзовать API по адресу http://193.124.59.193/AddNewTask
+Список параметоров:
+- apiKey (обязательный) - ваш API ключ. При регистрации на сайте http://193.124.59.193 вам автоматически присваивается уникальный ключ.
+- name (обязательный) - наименование задачи. Тип строка.
+- network (обязательный) - сеть, в которой находится ваш смарт контракт. Тип строка. Может принимать одно из трех значений: "CreditsNetwork", "DevsDappsTestnet" или "testnet-r4_2".
+- method (обязательный) - метод в смарт контракте, который вы собираетесь вызывать в запланированное время. Тип строка. Например: "executeRound". Указывается без скобок.
+- address (обязательный) - адрес смарт контракта. Тип строка. Например: "GVGAFSYAsTSfnnAZuHzHL43q9UpbvpEZzKn2VmfaMcEH".
+- executionMode (обязательный) - периодичность с которой будет вызываться вышеуказанные метод (method) в смарт котракте. Тип строка. Может принимать одно из трех значений:
+    "Regular" - задача будет выполняться регулярно
+    "Once" - задача будет выполнена единожду в строго указанное время
+    "CronExpression" - выражение в формате Cron. Например: "0,11 0,2,34 0,15 6 APR ? *". Данное выражение можно сформировать автоматически, используя какой-либо онлайн сервис, например, этот https://www.freeformatter.com/cron-expression-generator-quartz.html
+
+Дальнейшие параметры зависят от того какой executionMode указан.
+Если executionMode="Regular", то необходимо передать еще 4 параметра:
+    "regularDateFrom" - дата начала выполнения в формате "ММ-ДД-ГГГГ-ЧЧ-ММ-СС". Тип строка.
+    "regularDateTo" - дата окончания выполнения в формате "ММ-ДД-ГГГГ-ЧЧ-ММ-СС". Тип строка.
+    "regularPeriod" - периодичность. Может принимать 1 из трех значений: "Days", "Hours" или "Minutes". Тип строка.
+    "regularValue" - частота выполнения. Тип строка. Целочисленное значение. Например: 1, 3, 5, 10.
+Если executionMode="Once", то необходимо передать еще 1 параметр:
+    "onceDate" - дата выполнения в формате "ММ-ДД-ГГГГ-ЧЧ-ММ-СС"
+Если executionMode="CronExpression", то необходимо передать еще 1 параметр:
+    "cronExpression" - выражение в формате Cron
+    
+Пример 1.
+http://193.124.59.193/AddNewTask?apiKey="<ApiKey>"&name="Test1"&network="DevsDappsTestnet"&method="executeRound"&address="GVGAFSYAsTSfnnAZuHzHL43q9UpbvpEZzKn2VmfaMcEH"&executionMode="Regular"&regularDateFrom="01-01-2019-01-01-01"&regularDateTo="12-31-2019-23-59-59"&regularPeriod="Hours"&regularValue="3"
+
+Пример 2.
+http://193.124.59.193/AddNewTask?apiKey="<ApiKey>"&name="Test2"&network="testnet-r4_2"&method="executeRound"&address="GVGAFSYAsTSfnnAZuHzHL43q9UpbvpEZzKn2VmfaMcEH"&executionMode="Once"&onceDate="12-31-2019-23-59-59"
+
+Пример 3.
+http://193.124.59.193/AddNewTask?apiKey="<ApiKey>"&name="Test3"&network="CreditsNetwork"&method="executeRound"&address="GVGAFSYAsTSfnnAZuHzHL43q9UpbvpEZzKn2VmfaMcEH"&executionMode="CronExpression"&cronExpression="0,11 0,2,34 0,15 6 APR ? *"
