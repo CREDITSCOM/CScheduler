@@ -23,7 +23,7 @@ namespace CScheduler.Controllers
             {
                 var partHolders = GetPartHolders(i);
                 model.Holders.AddRange(partHolders);
-                break;
+                //break;
             }
 
             //Transfers
