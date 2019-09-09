@@ -23,6 +23,9 @@ namespace CScheduler.Classes.Database
         //Вызывается 1 раз при начале работы сервера
         public async static void Initialise()
         {
+            if (Environment.MachineName == "ANDY0451")
+                return;
+
             NameValueCollection props = new NameValueCollection { { "quartz.serializer.type", "binary" } };
             StdSchedulerFactory factory = new StdSchedulerFactory(props);
 

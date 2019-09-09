@@ -1,0 +1,81 @@
+﻿@model CScheduler.Models.EtherscanModel
+
+@{
+    Layout = null;
+}
+
+<!DOCTYPE html>
+
+<html>
+<head>
+    <meta name="viewport" content="width=device-width" />
+    <title>Etherscan</title>
+    <link href="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-ggOyR0iXCbMQv3Xipma34MD+dH/1fQ784/j6cY/iJTQUOhcWr7x9JvoRxT2MZw1T" crossorigin="anonymous">
+</head>
+<body>
+
+    <style>
+        /*.quantity-col {
+            text-align: right;
+        }
+        .percentage-col {
+            text-align: center;
+        }*/
+        .my-container {
+            padding: 30px;
+        }
+    </style>
+
+    <div class="my-container">
+        <h1>Top 700 holders</h1>
+        <h3><a href="https://etherscan.io/token/0x46b9ad944d1059450da1163511069c718f699d31#balances" target="_blank">Источник данных</a></h3>
+        <table class="table table-hover table-striped">
+            <thead>
+                <tr>
+                    <th>Rank</th>
+                    <th>Address</th>
+                    <th class="quantity-col">Quantity</th>
+                    <th class="percentage-col">Percentage</th>
+                </tr>
+            </thead>
+            <tbody>
+                @foreach (var row in Model.Holders)
+                {
+                    <tr>
+                        <th>@row.Rank</th>
+                        <th>@Html.Raw(row.Address)</th>
+                        <th>@row.Quantity</th>
+                        <th>@row.Percentage</th>
+                    </tr>
+                }
+            </tbody>
+        </table><br />
+
+        <h1>Last transactions</h1>
+        <h3><a href="https://etherscan.io/token/0x46b9ad944d1059450da1163511069c718f699d31" target="_blank">Источник данных</a></h3>
+        <table class="table table-hover table-striped">
+            <thead>
+                <tr>
+                    <th>Hash</th>
+                    <th>Age</th>
+                    <th>From</th>
+                    <th>To</th>
+                    <th>Quantity</th>
+                </tr>
+            </thead>
+            <tbody>
+                @foreach (var row in Model.Transfers)
+                {
+                    <tr>
+                        <th>@Html.Raw(row.Hash)</th>
+                        <th>@Html.Raw(row.Age)</th>
+                        <th>@Html.Raw(row.From)</th>
+                        <th>@Html.Raw(row.To)</th>
+                        <th>@Html.Raw(row.Quantity)</th>
+                    </tr>
+                }
+            </tbody>
+        </table>
+    </div>
+</body>
+</html>

@@ -186,7 +186,6 @@ namespace CScheduler.Controllers
             return View(smartJob);
         }
 
-        // POST: SmartJobs/Delete/5
         [HttpPost, ActionName("Delete")]
         [ValidateAntiForgeryToken]
         public async Task<ActionResult> DeleteConfirmed(int id)
