@@ -28,7 +28,7 @@
     - "Once" - задача будет выполнена единожду в строго указанное время
     - "CronExpression" - выражение в формате Cron. Например: "0,11 0,2,34 0,15 6 APR ? *". Данное выражение можно сформировать автоматически, используя какой-либо онлайн сервис, например, этот https://www.freeformatter.com/cron-expression-generator-quartz.html
 
-Дальнейшие параметры зависят от того какой executionMode указан.
+Дальнейшие параметры зависят от того какой executionMode указан.</br>
 Если executionMode="Regular", то необходимо передать еще 4 параметра:
     <ul>
     <li>"regularDateFrom" - дата начала выполнения в формате "ММ-ДД-ГГГГ-ЧЧ-ММ-СС". Тип строка.</li>
@@ -37,9 +37,13 @@
     <li>"regularValue" - частота выполнения. Тип строка. Целочисленное значение. Например: 1, 3, 5, 10.</li>
     </ul>
 Если executionMode="Once", то необходимо передать еще 1 параметр:
-    - "onceDate" - дата выполнения в формате "ММ-ДД-ГГГГ-ЧЧ-ММ-СС"
+    <ul>
+    <li>"onceDate" - дата выполнения в формате "ММ-ДД-ГГГГ-ЧЧ-ММ-СС"</li>
+    </ul>
 Если executionMode="CronExpression", то необходимо передать еще 1 параметр:
-    - "cronExpression" - выражение в формате Cron
+    <ul>
+    <li>"cronExpression" - выражение в формате Cron</li>
+    </ul>
     
 Пример 1.
 http://193.124.59.193/AddNewTask?apiKey="YourApiKey"&name="Test1"&network="DevsDappsTestnet"&method="executeRound"&address="GVGAFSYAsTSfnnAZuHzHL43q9UpbvpEZzKn2VmfaMcEH"&executionMode="Regular"&regularDateFrom="01-01-2019-01-01-01"&regularDateTo="12-31-2019-23-59-59"&regularPeriod="Hours"&regularValue="3"
