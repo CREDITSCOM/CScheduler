@@ -62,7 +62,7 @@ namespace CScheduler.Controllers
             };
         }
 
-        public JsonResult AddNewTask(string apiKey = "", string name = "", string network = "", string method = "", string address = "", string executionMode = "", string regularDateFrom = "", string regularDateTo = "", string regularPeriod = "", string regularValue = "", string onceDate = "", string cronExpression = "")
+        public async Task<JsonResult> AddNewTask(string apiKey = "", string name = "", string network = "", string method = "", string address = "", string executionMode = "", string regularDateFrom = "", string regularDateTo = "", string regularPeriod = "", string regularValue = "", string onceDate = "", string cronExpression = "")
         {
             var result = new ApiJsonResult();
 
@@ -185,10 +185,13 @@ namespace CScheduler.Controllers
                                                     smartJob.Rule.Presentation = Rule.GeneratePresentation(smartJob);
 
                                                     dbContext.SmartJobs.Add(smartJob);
-                                                    dbContext.SaveChanges();
+                                                    await dbContext.SaveChangesAsync();
 
                                                     //Обновляем данные по задаче
-                                                    QuartzTasks.UpdateJob(smartJob.ID);
+                                                    await QuartzTasks.UpdateJob(smartJob.ID);
+
+                                                    result.IsSuccess = true;
+                                                    result.Message = "Action completed";
                                                 }
                                             }
                                         }
