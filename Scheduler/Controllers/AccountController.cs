@@ -354,6 +354,15 @@ namespace CScheduler.Controllers
             switch (result)
             {
                 case SignInStatus.Success:
+                    using (var dbContext = new DatabaseContext())
+                    {
+                        var user = dbContext.Users.FirstOrDefault(x => x.Email == model.Email);
+                        if (string.IsNullOrEmpty(user.ApiKey))
+                        {
+                            user.ApiKey = Guid.NewGuid().ToString();
+                            dbContext.SaveChanges();
+                        }
+                    }
                     return RedirectToLocal(returnUrl);
                 case SignInStatus.LockedOut:
                     return View("Lockout");
@@ -439,7 +448,8 @@ namespace CScheduler.Controllers
                     FullName = string.Format("{0} {1}.", model.LastName, model.FirstName.Substring(0, 1)),
                     PublicKey = publicKey,
                     PrivateKey = privateKey,
-                    IsActivated = true
+                    IsActivated = true,
+                    ApiKey = Guid.NewGuid().ToString()
                 };
 
                 var result = await UserManager.CreateAsync(user, model.Password);

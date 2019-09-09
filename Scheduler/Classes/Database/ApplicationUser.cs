@@ -20,11 +20,17 @@ namespace CScheduler.Classes.Database
         [Display(Name = "Activated")]
         public bool IsActivated { get; set; }
 
+        [Display(Name = "Full name")]
         public string FullName { get; set; }
 
         [Display(Name = "Public key")]
         public string PublicKey { get; set; }
+
+        [Display(Name = "Private key")]
         public string PrivateKey { get; set; }
+
+        [Display(Name = "API key")]
+        public string ApiKey { get; set; }
 
         public async Task<ClaimsIdentity> GenerateUserIdentityAsync(UserManager<ApplicationUser> manager)
         {

@@ -72,7 +72,6 @@ namespace CScheduler.Controllers
             {
                 smartJob = new SmartJob();
                 smartJob.ID = -1;
-                smartJob.MaxFee = "0.01";
                 smartJob.IsActive = true;
                 smartJob.ExecutionMode = ExecutionModeEnum.Regular;
                 smartJob.Rule = new Rule() { RegularPeriod = PeriodEnum.Minute };
@@ -145,7 +144,6 @@ namespace CScheduler.Controllers
                     smartJob.Name = model.Name;
                     smartJob.IsActive = model.IsActive;
                     smartJob.Method = model.Method;
-                    smartJob.MaxFee = model.MaxFee;
                     smartJob.Address = model.Address;
                     smartJob.CreditsNet = await dbContext.CreditsNets.FirstOrDefaultAsync(x => x.ID == model.CreditsNet.ID);
                     smartJob.ExecutionMode = model.ExecutionMode;

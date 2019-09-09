@@ -27,13 +27,6 @@ namespace CScheduler.Classes.Database
         [Required]
         public string Address { get; set; }
 
-        //[Display(Name = "Max fee")]
-        //[Required]
-        //[RegularExpression(@"/^\d*\.?\,?\d*$/", ErrorMessage = "Wrong value")]
-        //public decimal MaxFee { get; set; }
-        [RegularExpression(@"^[0-9]{1,2}([,.][0-9]{1,2})?$", ErrorMessage = "Wrong value")]
-        public string MaxFee { get; set; }
-
         [Display(Name = "Network")]
         public CreditsNet CreditsNet { get; set; }
 

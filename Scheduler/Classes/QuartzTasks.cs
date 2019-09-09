@@ -148,7 +148,6 @@ namespace CScheduler.Classes.Database
 
                         var jsonData = new JsonData();
                         jsonData.Amount = "0";
-                        jsonData.Fee = smartJob.MaxFee.ToString();
                         jsonData.Smart.Method = smartJob.Method;
                         jsonData.Source = smartJob.CreatedBy.PublicKey;
                         jsonData.Target = smartJob.Address;
@@ -277,7 +276,6 @@ namespace CScheduler.Classes.Database
         public class JsonData
         {
             public string Amount { get; set; }
-            public string Fee { get; set; }
             public Smart Smart { get; set; }
             public string Source { get; set; }
             public string Target { get; set; }

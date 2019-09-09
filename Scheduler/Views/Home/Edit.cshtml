@@ -52,7 +52,7 @@
                 </div>
 
                 <div class="row">
-                    <div class="col-md-8">
+                    <div class="col-md-12">
                         <div class="form-group">
                             @Html.LabelFor(model => model.CreditsNet, htmlAttributes: new { @class = "control-label" })
                             <div class="">
@@ -60,15 +60,6 @@
                                     @Html.DropDownListFor(model => model.CreditsNet.ID, Model.CreditsNetList, new { @class = "form-control" })
                                     @Html.ValidationMessageFor(model => model.CreditsNet, "", new { @class = "text-danger" })
                                 </div>
-                            </div>
-                        </div>
-                    </div>
-                    <div class="col-md-4">
-                        <div class="form-group">
-                            @Html.LabelFor(model => model.MaxFee, htmlAttributes: new { @class = "control-label" })
-                            <div class="">
-                                @Html.EditorFor(model => model.MaxFee, new { htmlAttributes = new { @class = "form-control" } })
-                                @Html.ValidationMessageFor(model => model.MaxFee, "", new { @class = "text-danger" })
                             </div>
                         </div>
                     </div>
