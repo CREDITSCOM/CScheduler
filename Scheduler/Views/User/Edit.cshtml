@@ -51,6 +51,14 @@
                         @Html.ValidationMessageFor(model => model.PublicKey, "", new { @class = "text-danger" })
                     </div>
                 </div>
+                
+                <div class="form-group">
+                    @Html.LabelFor(model => model.ApiKey, htmlAttributes: new { @class = "control-label" })
+                    <div class="">
+                        @Html.EditorFor(model => model.ApiKey, new { htmlAttributes = new { disabled = "disabled", @class = "form-control" } })
+                        @Html.ValidationMessageFor(model => model.ApiKey, "", new { @class = "text-danger" })
+                    </div>
+                </div>
 
                 @if (User.IsInRole("Admin"))
                 {
