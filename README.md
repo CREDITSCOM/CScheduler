@@ -18,17 +18,17 @@
 # API
 Для программного добавления задач можно использовать API по адресу http://193.124.59.193/Api/AddNewTask
 Список параметров:
-- apiKey (обязательный) - ваш API ключ. При регистрации на сайте http://193.124.59.193 вам автоматически присваивается уникальный ключ.
+- apiKey (обязательный) - ваш API ключ. При регистрации на сайте http://193.124.59.193 вам автоматически присваивается уникальный ключ. Найти ключ можно в личном кабинете (Menu - My account - Personal data)
 - name (обязательный) - наименование задачи. Тип строка.
 - network (обязательный) - сеть, в которой находится ваш смарт контракт. Тип строка. Может принимать одно из трех значений: "CreditsNetwork", "DevsDappsTestnet" или "testnet-r4_2".
-- method (обязательный) - метод в смарт контракте, который вы собираетесь вызывать в запланированное время. Тип строка. Например: "executeRound". Указывается без скобок.
+- method (обязательный) - публичный метод в смарт контракте, который вы собираетесь вызывать в запланированное время. Тип строка. Например: "executeRound". Указывается без скобок.
 - address (обязательный) - адрес смарт контракта. Тип строка. Например: "GVGAFSYAsTSfnnAZuHzHL43q9UpbvpEZzKn2VmfaMcEH".
 - executionMode (обязательный) - периодичность с которой будет вызываться вышеуказанные метод (method) в смарт контракте. Тип строка. Может принимать одно из трех значений:
     - "Regular" - задача будет выполняться регулярно
     - "Once" - задача будет выполнена единожды в строго указанное время
     - "CronExpression" - выражение в формате Cron. Например: "0,11 0,2,34 0,15 6 APR ? *". Данное выражение можно сформировать автоматически, используя какой-либо онлайн-сервис, например, этот https://www.freeformatter.com/cron-expression-generator-quartz.html
 
-Дальнейшие параметры зависят от того какой executionMode указан.</br>
+Заполнение других параметров зависят от того какой executionMode указан.</br>
 Если executionMode="Regular", то необходимо передать еще 4 параметра:
     <ul>
     <li>"regularDateFrom" - дата начала выполнения в формате "ММ-ДД-ГГГГ-ЧЧ-ММ-СС". Тип строка.</li>
@@ -45,11 +45,11 @@
     <li>"cronExpression" - выражение в формате Cron</li>
     </ul>
     
-Пример 1.
+Пример 1. Метод executeRound в смарт контракте по адресу GVGAFSYAsTSfnnAZuHzHL43q9UpbvpEZzKn2VmfaMcEH будет вызываться с 1-го января по 31-е декабря каждые 3 часа.
 http://193.124.59.193/Api/AddNewTask?apiKey="YourApiKey"&name="Test1"&network="DevsDappsTestnet"&method="executeRound"&address="GVGAFSYAsTSfnnAZuHzHL43q9UpbvpEZzKn2VmfaMcEH"&executionMode="Regular"&regularDateFrom="01-01-2019-01-01-01"&regularDateTo="12-31-2019-23-59-59"&regularPeriod="Hours"&regularValue="3"
 
-Пример 2.
+Пример 2. Метод executeRound будет вызван единожды 31 декабря в 23:59:59
 http://193.124.59.193/Api/AddNewTask?apiKey="YourApiKey"&name="Test2"&network="testnet-r4_2"&method="executeRound"&address="GVGAFSYAsTSfnnAZuHzHL43q9UpbvpEZzKn2VmfaMcEH"&executionMode="Once"&onceDate="12-31-2019-23-59-59"
 
-Пример 3.
+Пример 3. Метод executeRound будет вызываться согласно расписанию, закодированному в формате cron
 http://193.124.59.193/Api/AddNewTask?apiKey="YourApiKey"&name="Test3"&network="CreditsNetwork"&method="executeRound"&address="GVGAFSYAsTSfnnAZuHzHL43q9UpbvpEZzKn2VmfaMcEH"&executionMode="CronExpression"&cronExpression="0,11 0,2,34 0,15 6 APR ? *"
