@@ -14,7 +14,7 @@
 Для реализации завершения раунда в смарт контракте предусмотрен метод executeRound(). Для автоматического вызова этого метода можно использовать данный сервис. Для этого необходимо сделать следующее:
 - Перейти на сайт http://193.124.59.193 и зарегистрироваться
 - На главой странице нажать кнопку "Добавить задачу" и заполнить все параметры задачи.
-
+</br></br>
 # API
 <h2>/Api/AddNewTask - добавление новой задачи</h2>
 Для программного добавления задач можно использовать API по адресу http://193.124.59.193/Api/AddNewTask
@@ -58,8 +58,25 @@ http://193.124.59.193/Api/AddNewTask?apiKey="YourApiKey"&name="Test2"&network="t
 
 Пример 3. Метод <b>executeRound</b> будет вызываться согласно расписанию, закодированному в формате cron
 http://193.124.59.193/Api/AddNewTask?apiKey="YourApiKey"&name="Test3"&network="CreditsNetwork"&method="executeRound"&address="GVGAFSYAsTSfnnAZuHzHL43q9UpbvpEZzKn2VmfaMcEH"&executionMode="CronExpression"&cronExpression="0,11 0,2,34 0,15 6 APR ? *"
+</br></br>
 
 <h2>/Api/DeploySmartContract - создать новый смарт контракт</h2>
+Для создания нового контракта необходимо отправить post запрос по адресу http://193.124.59.193/Api/DeploySmartContract и передать json объект с 4-мя параметрами:
+<ul>
+    <li><b>Network</b> - может быть одним из трех значений: 'CreditsNetwork' или 'testnet-r4_2' или 'DevsDappsTestnet'</li>
+    <li><b>PublicKey</b> - публичный ключ вашего кошелька</li>
+    <li><b>PrivateKey</b> - приватный ключ вашего кошелька</li>
+    <li><b>JavaCode</b> - java код вашего смарт контракта/li>    
+</ul>
+    
+В ответе будет возвращен json с 3-мя параметрами:
+<ul>
+    <li><b>IsSuccess</b> - если смарт контракт добавлен, то значение равно true, иначе false</li>
+    <li><b>Address</b> - если смарт контракт добавлен, то значение будет содержать адрес контракта, иначе empty</li> 
+    <li><b>Message</b> - если смарт контракт добавлен, то значение равно 'Ok', иначе описание ошибки</li> 
+</ul>
+    
+Пример запроса:    
     
     let model = new Object();            
     model.Network = 'CreditsNetwork'; //CreditsNetwork or testnet-r4_2 or DevsDappsTestnet
@@ -91,4 +108,3 @@ http://193.124.59.193/Api/AddNewTask?apiKey="YourApiKey"&name="Test3"&network="C
             }                    
         }
     });
-
