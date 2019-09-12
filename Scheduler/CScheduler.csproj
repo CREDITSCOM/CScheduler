@@ -298,6 +298,10 @@
     <Compile Include="Migrations\201909091335088_up5.Designer.cs">
       <DependentUpon>201909091335088_up5.cs</DependentUpon>
     </Compile>
+    <Compile Include="Migrations\201909091855164_up6.cs" />
+    <Compile Include="Migrations\201909091855164_up6.Designer.cs">
+      <DependentUpon>201909091855164_up6.cs</DependentUpon>
+    </Compile>
     <Compile Include="Migrations\Configuration.cs" />
     <Compile Include="Models\AccountViewModels.cs" />
     <Compile Include="Classes\Database\ApplicationUser.cs" />
@@ -503,6 +507,7 @@
   </ItemGroup>
   <ItemGroup>
     <Folder Include="App_Data\" />
+    <Folder Include="Views\test\" />
   </ItemGroup>
   <ItemGroup>
     <None Include="packages.config" />
@@ -530,6 +535,9 @@
     </EmbeddedResource>
     <EmbeddedResource Include="Migrations\201909091335088_up5.resx">
       <DependentUpon>201909091335088_up5.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Migrations\201909091855164_up6.resx">
+      <DependentUpon>201909091855164_up6.cs</DependentUpon>
     </EmbeddedResource>
   </ItemGroup>
   <PropertyGroup>
