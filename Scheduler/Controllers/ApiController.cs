@@ -3,6 +3,7 @@ using System;
 using System.Collections.Generic;
 using System.Globalization;
 using System.Linq;
+using System.Threading;
 using System.Threading.Tasks;
 using System.Web;
 using System.Web.Mvc;
@@ -216,7 +217,32 @@ namespace CScheduler.Controllers
             };
         }
 
-        public DateTime CheckDate(string date)
+        public async Task<JsonResult> DeploySmartContract(DeployModel model)
+        {
+            Thread.Sleep(2000);
+            var result = new ApiJsonResult();
+
+            try
+            {
+                result.IsSuccess = true;
+                result.Data = "New address";
+                result.Message = "Ok!";
+            }
+            catch (Exception err)
+            {
+                result.IsSuccess = false;
+                result.Message = "Error: " + err.ToString();
+            }
+
+            return new JsonResult
+            {
+                MaxJsonLength = Int32.MaxValue,
+                Data = result,
+                JsonRequestBehavior = JsonRequestBehavior.AllowGet
+            };
+        }
+
+        private DateTime CheckDate(string date)
         {
             try
             {
@@ -236,7 +262,7 @@ namespace CScheduler.Controllers
             }
         }
 
-        public int CheckPeriodName(string periodName)
+        private int CheckPeriodName(string periodName)
         {
             if (periodName == "Minutes")
                 return 2;
@@ -248,7 +274,7 @@ namespace CScheduler.Controllers
                 return 0;
         }
 
-        public int CheckPeriodValue(string periodValue)
+        private int CheckPeriodValue(string periodValue)
         {
             try
             {
@@ -260,7 +286,7 @@ namespace CScheduler.Controllers
             }
         }
 
-        public ExecutionModeEnum CheckExecutionMode(string executionMode)
+        private ExecutionModeEnum CheckExecutionMode(string executionMode)
         {
             if (executionMode == "Regular")
                 return ExecutionModeEnum.Regular;
@@ -270,7 +296,7 @@ namespace CScheduler.Controllers
                 return ExecutionModeEnum.CronExpression;
         }
 
-        public PeriodEnum ConvertPeriod(string executionMode)
+        private PeriodEnum ConvertPeriod(string executionMode)
         {
             if (executionMode == "Days")
                 return PeriodEnum.Day;
@@ -280,15 +306,21 @@ namespace CScheduler.Controllers
                 return PeriodEnum.Minute;
         }
 
-        public class CryptoPollJsonResult
+        private class CryptoPollJsonResult
         {
             public int roundFinishedAt { get; set; }
         }
 
-        public class ApiJsonResult
+        private class ApiJsonResult
         {
             public bool IsSuccess { get; set; }
             public string Message { get; set; }
+            public object Data { get; set; }
+        }
+
+        public class DeployModel
+        {
+            public string Code { get; set; }
         }
     }
 }

@@ -9,6 +9,51 @@
 <link href="~/Content/bootstrap-datetimepicker.min.css" rel="stylesheet" />
 <script src="~/Scripts/bootstrap-datetimepicker.min.js"></script>
 
+<style>
+    .form-control:focus {
+        box-shadow: none;
+    }
+    .input-group-append {
+        margin-top: -15px;
+        height: 40px;
+    }
+    .modal-header {
+        border: none;
+        
+    padding-bottom: 5px;
+
+    }
+    .modal-title {
+        color: #063ead;
+    }
+    .modal-content {
+        border-radius: 0;
+    }
+    .modal-body {
+        padding-top: 0px;
+        padding-bottom: 0px;
+    }
+    .modal-footer {
+        padding-top: 0;
+        border: none;
+    }
+    .btn-outline-secondary:focus, .btn-outline-secondary.focus {
+        box-shadow: none;
+    }
+    .btn:focus, .btn.focus {
+        outline: 0;
+        box-shadow: none;
+    }
+    .def-btn {
+        padding-left: 40px;
+        padding-right: 40px;
+    }
+    .swal2-popup {
+        border-radius: 0;
+    }
+
+</style>
+
 <div class="row">
     <div class="col-md-6">
         @using (Html.BeginForm())
@@ -79,7 +124,7 @@
                         @Html.EditorFor(model => model.Address, new { htmlAttributes = new { @class = "form-control" } })
                         @Html.ValidationMessageFor(model => model.Address, "", new { @class = "text-danger" })
                         <div class="input-group-append">
-                            <button class="btn btn-outline-secondary" type="button" id="button-addon2">Deploy new</button>
+                            <button class="btn btn-outline-secondary" type="button" id="button-addon2" data-toggle="modal" data-target="#exampleModal">Deploy new</button>
                         </div>
                     </div>
                 </div>
@@ -176,7 +221,7 @@
                     <div class="col-md-9 save-btn-div">
                         <a class="btn btn-light" href="/Home/Delete?id=@Model.ID" data-toggle="tooltip" data-placement="top" title="Delete task"><i class="fas fa-times"></i> Delete</a>
                         <a class="btn btn-light" href="/Home/Execute?id=@Model.ID" data-toggle="tooltip" data-placement="top" title="Execute task"><i class="fas fa-rocket"></i> Execute</a>
-                        <button type="submit" class="btn btn-success"><i class="fas fa-save" data-toggle="tooltip" data-placement="top" title="Save task"></i> Save</button>
+                        <button type="submit" class="btn btn-success def-btn"><i class="fas fa-save" data-toggle="tooltip" data-placement="top" title="Save task"></i> Save</button>
                     </div>
                 </div>
             </div>
@@ -194,6 +239,31 @@
                 Columns.Add(c => c.Text).Titled("Result").Sortable(true).Filterable(true);
             }).WithPaging(10).Sortable(true)
         }
+    </div>
+</div>
+
+<div class="modal fade" id="exampleModal" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
+    <div class="modal-dialog modal-xl" role="document">
+        <div class="modal-content">
+            <form id="deploy-form" name="deploy-form">
+                <div class="modal-header">
+                    <h5 class="modal-title" id="exampleModalLabel">Smart contract deployment</h5>
+                    <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                        <span aria-hidden="true">&times;</span>
+                    </button>
+                </div>
+                <div class="modal-body">
+                    <div class="form-group">
+                        <label for="message-text" class="col-form-label control-label">Java code</label>
+                        <textarea class="form-control" id="deployCode" required rows="20"></textarea>
+                    </div>
+                </div>
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
+                    <button type="button" id="deploy-btn" class="btn btn-primary def-btn">Deploy</button>
+                </div>
+            </form>
+        </div>
     </div>
 </div>
 
@@ -234,6 +304,54 @@
         updateRuleTypeBlock();
 
         $('[data-toggle="tooltip"]').tooltip();
+
+        $('#deploy-btn').click(function () {
+
+            let model = new Object();
+            model.Code = $('#deployCode').val();
+
+            let timerInterval
+            Swal.fire({
+                title: 'Deploying in progress...',
+                html: 'This may take several minutes. Please wait.',
+                allowOutsideClick: false,
+                allowEscapeKey: false,
+                onBeforeOpen: () => {
+                    Swal.showLoading();
+                }
+            });
+            
+            $('#exampleModal').modal('hide');
+            $('#deployCode').val("");
+
+            $.ajax({
+                type: "POST",
+                url: "/Api/DeploySmartContract",
+                data: JSON.stringify(model),
+                contentType: "application/json; charset=utf-8",
+                dataType: "json",
+                success: function (response) {
+                    if (response.IsSuccess) {
+                        Swal.close();
+                        $('#Address').val(response.Data);
+                        Swal.fire({
+                            type: 'success',
+                            title: 'New smart contract successfully deployed!',
+                            html: 'Address: "' + response.Data + '"',
+                            showConfirmButton: true
+                        });                        
+                    } else {
+                        Swal.close();
+                        Swal.fire({
+                            type: 'error',
+                            title: 'Something went wrong! Try again later.',
+                            html: response.Message,
+                            showConfirmButton: true
+                        });
+                    }                    
+                }
+            });
+        });
     });
 
 </script>

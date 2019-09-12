@@ -50,8 +50,14 @@
     <Reference Include="Base58Check, Version=0.2.0.0, Culture=neutral, processorArchitecture=MSIL">
       <HintPath>packages\Base58Check.0.2.0\lib\Net40\Base58Check.dll</HintPath>
     </Reference>
+    <Reference Include="Blake2s, Version=0.1.0.0, Culture=neutral, processorArchitecture=MSIL">
+      <HintPath>..\packages\blake2s-net.0.1.0\lib\net\Blake2s.dll</HintPath>
+    </Reference>
     <Reference Include="BouncyCastle.Crypto, Version=1.8.3.0, Culture=neutral, PublicKeyToken=0e99375e54769942">
       <HintPath>packages\BouncyCastle.1.8.3.1\lib\BouncyCastle.Crypto.dll</HintPath>
+    </Reference>
+    <Reference Include="Credtis Api Connect, Version=1.0.0.0, Culture=neutral, processorArchitecture=MSIL">
+      <HintPath>..\packages\CredtisApiConnect.1.0.0\lib\netstandard2.0\Credtis Api Connect.dll</HintPath>
     </Reference>
     <Reference Include="DevRain.Data.Extracting">
       <HintPath>packages\DevRain.Data.Extracting.dll</HintPath>
@@ -194,6 +200,9 @@
     </Reference>
     <Reference Include="Newtonsoft.Json">
       <HintPath>packages\Newtonsoft.Json.11.0.1\lib\net45\Newtonsoft.Json.dll</HintPath>
+    </Reference>
+    <Reference Include="Thrift45, Version=1.0.0.1, Culture=neutral, processorArchitecture=MSIL">
+      <HintPath>..\packages\Thrift45.1.0.0.1\lib\net461\Thrift45.dll</HintPath>
     </Reference>
     <Reference Include="WebGrease">
       <Private>True</Private>
@@ -507,7 +516,6 @@
   </ItemGroup>
   <ItemGroup>
     <Folder Include="App_Data\" />
-    <Folder Include="Views\test\" />
   </ItemGroup>
   <ItemGroup>
     <None Include="packages.config" />
