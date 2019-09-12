@@ -66,10 +66,10 @@ http://193.124.59.193/Api/AddNewTask?apiKey="YourApiKey"&name="Test3"&network="C
     <li><b>Network</b> - может быть одним из трех значений: 'CreditsNetwork' или 'testnet-r4_2' или 'DevsDappsTestnet'</li>
     <li><b>PublicKey</b> - публичный ключ вашего кошелька</li>
     <li><b>PrivateKey</b> - приватный ключ вашего кошелька</li>
-    <li><b>JavaCode</b> - java код вашего смарт контракта/li>    
+    <li><b>JavaCode</b> - java код вашего смарт контракта</li>    
 </ul>
     
-В ответе будет возвращен json с 3-мя параметрами:
+В ответе будет возвращен json объект с 3-мя параметрами:
 <ul>
     <li><b>IsSuccess</b> - если смарт контракт добавлен, то значение равно true, иначе false</li>
     <li><b>Address</b> - если смарт контракт добавлен, то значение будет содержать адрес контракта, иначе empty</li> 
@@ -96,7 +96,7 @@ http://193.124.59.193/Api/AddNewTask?apiKey="YourApiKey"&name="Test3"&network="C
             
     $.ajax({
         type: "POST",
-        url: "/Api/DeploySmartContract",
+        url: "http://193.124.59.193/Api/DeploySmartContract",
         data: JSON.stringify(model),
         contentType: "application/json; charset=utf-8",
         dataType: "json",
