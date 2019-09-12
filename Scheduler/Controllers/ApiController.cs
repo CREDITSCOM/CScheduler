@@ -122,22 +122,22 @@ namespace CScheduler.Controllers
                                             {
                                                 if (executionMode == "Regular")
                                                 {
-                                                    if (checkDate(regularDateFrom) == DateTime.MinValue)
+                                                    if (CheckDate(regularDateFrom) == DateTime.MinValue)
                                                     {
                                                         result.IsSuccess = false;
                                                         result.Message = "The regularDateFrom value is wrong. Supported mask: mm-DD-YYYY-hh-MM-ss";
                                                     }
-                                                    else if (checkDate(regularDateTo) == DateTime.MinValue)
+                                                    else if (CheckDate(regularDateTo) == DateTime.MinValue)
                                                     {
                                                         result.IsSuccess = false;
                                                         result.Message = "The regularDateTo value is wrong. Supported mask: mm-DD-YYYY-hh-MM-ss";
                                                     }
-                                                    else if (checkPeriodName(regularPeriod) == 0)
+                                                    else if (CheckPeriodName(regularPeriod) == 0)
                                                     {
                                                         result.IsSuccess = false;
                                                         result.Message = "The regularPeriod value is wrong. Supported values: 'Minutes', 'Hours', 'Days'";
                                                     }
-                                                    else if (checkPeriodValue(regularValue) == 0)
+                                                    else if (CheckPeriodValue(regularValue) == 0)
                                                     {
                                                         result.IsSuccess = false;
                                                         result.Message = "The regularValue value is wrong. Supported values: 1, 2, 3, and so on...";
@@ -145,7 +145,7 @@ namespace CScheduler.Controllers
                                                 }
                                                 else if (executionMode == "Once")
                                                 {
-                                                    if (checkDate(onceDate) == DateTime.MinValue)
+                                                    if (CheckDate(onceDate) == DateTime.MinValue)
                                                     {
                                                         result.IsSuccess = false;
                                                         result.Message = "The onceDate value is wrong. Supported mask: mm-DD-YYYY-hh-MM-ss";
@@ -175,12 +175,12 @@ namespace CScheduler.Controllers
                                                     smartJob.Method = method;
                                                     smartJob.Address = address;
                                                     smartJob.CreditsNet = dbContext.CreditsNets.FirstOrDefault(x => x.Name == network);
-                                                    smartJob.ExecutionMode = checkExecutionMode(executionMode);
-                                                    smartJob.Rule.RegularDateFrom = checkDate(regularDateFrom).ToString("MM/dd/yyyy HH:mm:ss");
-                                                    smartJob.Rule.RegularDateTo = checkDate(regularDateTo).ToString("MM/dd/yyyy HH:mm:ss");
-                                                    smartJob.Rule.RegularPeriod = convertPeriod(regularPeriod);
-                                                    smartJob.Rule.RegularValue = checkPeriodValue(regularValue);
-                                                    smartJob.Rule.OnceDate = checkDate(onceDate).ToString("MM/dd/yyyy HH:mm:ss");
+                                                    smartJob.ExecutionMode = CheckExecutionMode(executionMode);
+                                                    smartJob.Rule.RegularDateFrom = CheckDate(regularDateFrom).ToString("MM/dd/yyyy HH:mm:ss");
+                                                    smartJob.Rule.RegularDateTo = CheckDate(regularDateTo).ToString("MM/dd/yyyy HH:mm:ss");
+                                                    smartJob.Rule.RegularPeriod = ConvertPeriod(regularPeriod);
+                                                    smartJob.Rule.RegularValue = CheckPeriodValue(regularValue);
+                                                    smartJob.Rule.OnceDate = CheckDate(onceDate).ToString("MM/dd/yyyy HH:mm:ss");
                                                     smartJob.Rule.CronExpression = cronExpression;
                                                     smartJob.Rule.Presentation = Rule.GeneratePresentation(smartJob);
 
@@ -216,7 +216,7 @@ namespace CScheduler.Controllers
             };
         }
 
-        public DateTime checkDate(string date)
+        public DateTime CheckDate(string date)
         {
             try
             {
@@ -236,7 +236,7 @@ namespace CScheduler.Controllers
             }
         }
 
-        public int checkPeriodName(string periodName)
+        public int CheckPeriodName(string periodName)
         {
             if (periodName == "Minutes")
                 return 2;
@@ -248,7 +248,7 @@ namespace CScheduler.Controllers
                 return 0;
         }
 
-        public int checkPeriodValue(string periodValue)
+        public int CheckPeriodValue(string periodValue)
         {
             try
             {
@@ -260,7 +260,7 @@ namespace CScheduler.Controllers
             }
         }
 
-        public ExecutionModeEnum checkExecutionMode(string executionMode)
+        public ExecutionModeEnum CheckExecutionMode(string executionMode)
         {
             if (executionMode == "Regular")
                 return ExecutionModeEnum.Regular;
@@ -270,7 +270,7 @@ namespace CScheduler.Controllers
                 return ExecutionModeEnum.CronExpression;
         }
 
-        public PeriodEnum convertPeriod(string executionMode)
+        public PeriodEnum ConvertPeriod(string executionMode)
         {
             if (executionMode == "Days")
                 return PeriodEnum.Day;
