@@ -13,7 +13,7 @@
 
 Для реализации завершения раунда в смарт контракте предусмотрен метод executeRound(). Для автоматического вызова этого метода можно использовать данный сервис. Для этого необходимо сделать следующее:
 - Перейти на сайт http://193.124.59.193 и зарегистрироваться
-- На главой странице нажать кнопку "Добавить задачу" и заполнить все параметры задачи. 
+- На главой странице нажать кнопку "Добавить задачу" и заполнить все параметры задачи.
 
 # API
 <h2>/Api/AddNewTask - добавление новой задачи</h2>
@@ -57,7 +57,6 @@ http://193.124.59.193/Api/AddNewTask?apiKey="YourApiKey"&name="Test3"&network="C
 
 <h2>/Api/DeploySmartContract - создать новый смарт контракт</h2>
 <code>
-$('#deploy-btn').click(function () {
 
     let model = new Object();            
     model.Network = 'CreditsNetwork'; //CreditsNetwork or testnet-r4_2 or DevsDappsTestnet
@@ -71,9 +70,8 @@ $('#deploy-btn').click(function () {
         'public class CryptoBattle extends SmartContract' +
         '{' +
         '    public String payable(BigDecimal amount, byte[] userData)' +
-        '...' +
-        '...' +
-        '...' +
+        '    ...' +
+        '    ...' +
         '}';
             
     $.ajax({
@@ -90,5 +88,5 @@ $('#deploy-btn').click(function () {
             }                    
         }
     });
-});
+
 </code>
