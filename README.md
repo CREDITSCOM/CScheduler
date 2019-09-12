@@ -19,16 +19,20 @@
 <h2>/Api/AddNewTask - добавление новой задачи</h2>
 Для программного добавления задач можно использовать API по адресу http://193.124.59.193/Api/AddNewTask
 Список параметров:
-- <b>apiKey</b> (обязательный) - ваш API ключ. При регистрации на сайте http://193.124.59.193 вам автоматически присваивается уникальный ключ. Найти ключ можно в личном кабинете (Menu - My account - Personal data)
-- <b>name</b> (обязательный) - наименование задачи. Тип строка.
-- <b>network</b> (обязательный) - сеть, в которой находится ваш смарт контракт. Тип строка. Может принимать одно из трех значений: "CreditsNetwork", "DevsDappsTestnet" или "testnet-r4_2".
-- <b>method</b> (обязательный) - публичный метод в смарт контракте, который вы собираетесь вызывать в запланированное время. Тип строка. Например: "executeRound". Указывается без скобок.
-- <b>address</b> (обязательный) - адрес смарт контракта. Тип строка. Например: "GVGAFSYAsTSfnnAZuHzHL43q9UpbvpEZzKn2VmfaMcEH".
-- <b>executionMode</b> (обязательный) - периодичность с которой будет вызываться вышеуказанные метод (method) в смарт контракте. Тип строка. Может принимать одно из трех значений:
-    - <b>Regular</b> - задача будет выполняться регулярно
-    - <b>Once</b> - задача будет выполнена единожды в строго указанное время
-    - <b>CronExpression</b> - выражение в формате Cron. Например: "0,11 0,2,34 0,15 6 APR ? *". Данное выражение можно сформировать автоматически, используя какой-либо онлайн-сервис, например, этот https://www.freeformatter.com/cron-expression-generator-quartz.html
-
+<ul>
+<li><b>apiKey</b> (обязательный) - ваш API ключ. При регистрации на сайте http://193.124.59.193 вам автоматически присваивается уникальный ключ. Найти ключ можно в личном кабинете (Menu - My account - Personal data)</li>
+<li><b>name</b> (обязательный) - наименование задачи. Тип строка.</li>
+<li><b>network</b> (обязательный) - сеть, в которой находится ваш смарт контракт. Тип строка. Может принимать одно из трех значений: "CreditsNetwork", "DevsDappsTestnet" или "testnet-r4_2".</li>
+<li><b>method</b> (обязательный) - публичный метод в смарт контракте, который вы собираетесь вызывать в запланированное время. Тип строка. Например: "executeRound". Указывается без скобок.</li>
+<li><b>address</b> (обязательный) - адрес смарт контракта. Тип строка. Например: "GVGAFSYAsTSfnnAZuHzHL43q9UpbvpEZzKn2VmfaMcEH".</li>
+<li><b>executionMode</b> (обязательный) - периодичность с которой будет вызываться вышеуказанные метод (method) в смарт контракте. Тип строка. Может принимать одно из трех значений:</li>
+    <ul>
+    <li><b>Regular</b> - задача будет выполняться регулярно</li>
+    <li><b>Once</b> - задача будет выполнена единожды в строго указанное время</li>
+    <li><b>CronExpression</b> - выражение в формате Cron. Например: "0,11 0,2,34 0,15 6 APR ? *". Данное выражение можно сформировать автоматически, используя какой-либо онлайн-сервис, например, этот https://www.freeformatter.com/cron-expression-generator-quartz.html</li>
+</ul>
+</ul>
+    
 Заполнение других параметров зависит от того какой <b>executionMode</b> указан.</br>
 Вариант 1. Если <b>executionMode</b>="Regular", то необходимо передать еще 4 параметра:
     <ul>
@@ -56,8 +60,7 @@ http://193.124.59.193/Api/AddNewTask?apiKey="YourApiKey"&name="Test2"&network="t
 http://193.124.59.193/Api/AddNewTask?apiKey="YourApiKey"&name="Test3"&network="CreditsNetwork"&method="executeRound"&address="GVGAFSYAsTSfnnAZuHzHL43q9UpbvpEZzKn2VmfaMcEH"&executionMode="CronExpression"&cronExpression="0,11 0,2,34 0,15 6 APR ? *"
 
 <h2>/Api/DeploySmartContract - создать новый смарт контракт</h2>
-<code>
-
+    
     let model = new Object();            
     model.Network = 'CreditsNetwork'; //CreditsNetwork or testnet-r4_2 or DevsDappsTestnet
     model.PublicKey = '<your public key>';
@@ -89,4 +92,3 @@ http://193.124.59.193/Api/AddNewTask?apiKey="YourApiKey"&name="Test3"&network="C
         }
     });
 
-</code>
