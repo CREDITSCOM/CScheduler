@@ -308,7 +308,8 @@
         $('#deploy-btn').click(function () {
 
             let model = new Object();
-            model.Code = $('#deployCode').val();
+            model.JavaCode = $('#deployCode').val();
+            model.NetworkID = $('#CreditsNet_ID').val();
 
             let timerInterval
             Swal.fire({

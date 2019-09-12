@@ -1,4 +1,6 @@
-﻿using CScheduler.Classes.Database;
+﻿using Credtis_Api_Connect;
+using Credtis_Api_Connect.Model;
+using CScheduler.Classes.Database;
 using System;
 using System.Collections.Generic;
 using System.Globalization;
@@ -217,16 +219,64 @@ namespace CScheduler.Controllers
             };
         }
 
+        private string GetIP(int NetworkID)
+        {
+            //CreditsNetwork
+            if (NetworkID == 1)
+                return "161.156.96.26";
+
+            //testnet-r4_2
+            else if (NetworkID == 2)
+                return "89.111.33.169";
+
+            //DevsDappsTestnet
+            else
+                return "161.156.96.22";
+        }
+
         public async Task<JsonResult> DeploySmartContract(DeployModel model)
         {
-            Thread.Sleep(2000);
             var result = new ApiJsonResult();
 
             try
             {
-                result.IsSuccess = true;
-                result.Data = "New address";
-                result.Message = "Ok!";
+                using (var dbContext = new DatabaseContext())
+                {
+                    var email = User?.Identity?.Name;
+                    if (!string.IsNullOrEmpty(email))
+                    {
+                        var user = dbContext.Users.FirstOrDefault(x => x.Email == email);
+                        var publicKey = "6msdfZdDj9nwRGuDBoyUFRaXnP7tmG117BPx7tdvUjsm"; //user.PublicKey;
+                        var privateKey = "54tZoXaDa38n8rbg1BGrDMVBSP12TGcyE7UNvDQfD7w1uEMYCzdv7bpDycgiPwNd92opbZh94kVmArVoW4YFDF4j";  //user.PrivateKey;
+                        var networkIP = GetIP(model.NetworkID);
+
+                        using (Work work = new Work(networkIP))
+                        {
+                            var transaction = work.Api.SendTransaction<CreateTransactionModel>(new CreateTransactionModel(new TransactionCreateModel
+                            {
+                                Amount = "0",
+                                Fee = "1",
+                                Source = publicKey,
+                                Smart = new SmartCreateModel
+                                {
+                                    Code = model.JavaCode
+                                }
+                            }), Base58Check.Base58CheckEncoding.DecodePlain(privateKey));
+
+                            var source = Base58Check.Base58CheckEncoding.EncodePlain(transaction.Source);
+                            var target = Base58Check.Base58CheckEncoding.EncodePlain(transaction.Target);
+
+                            result.IsSuccess = true;
+                            result.Data = target;
+                            result.Message = "Ok!";
+                        }
+                    }
+                    else
+                    {
+                        result.IsSuccess = false;
+                        result.Message = "User is not registered.";
+                    }
+                }
             }
             catch (Exception err)
             {
@@ -320,7 +370,8 @@ namespace CScheduler.Controllers
 
         public class DeployModel
         {
-            public string Code { get; set; }
+            public string JavaCode { get; set; }
+            public int NetworkID { get; set; }
         }
     }
 }
