@@ -16,6 +16,7 @@
 - На главой странице нажать кнопку "Добавить задачу" и заполнить все параметры задачи. 
 
 # API
+<h2>/Api/AddNewTask - добавление новой задачи</h2>
 Для программного добавления задач можно использовать API по адресу http://193.124.59.193/Api/AddNewTask
 Список параметров:
 - <b>apiKey</b> (обязательный) - ваш API ключ. При регистрации на сайте http://193.124.59.193 вам автоматически присваивается уникальный ключ. Найти ключ можно в личном кабинете (Menu - My account - Personal data)
@@ -53,3 +54,41 @@ http://193.124.59.193/Api/AddNewTask?apiKey="YourApiKey"&name="Test2"&network="t
 
 Пример 3. Метод <b>executeRound</b> будет вызываться согласно расписанию, закодированному в формате cron
 http://193.124.59.193/Api/AddNewTask?apiKey="YourApiKey"&name="Test3"&network="CreditsNetwork"&method="executeRound"&address="GVGAFSYAsTSfnnAZuHzHL43q9UpbvpEZzKn2VmfaMcEH"&executionMode="CronExpression"&cronExpression="0,11 0,2,34 0,15 6 APR ? *"
+
+<h2>/Api/DeploySmartContract - создать новый смарт контракт</h2>
+<code>
+$('#deploy-btn').click(function () {
+
+    let model = new Object();            
+    model.Network = 'CreditsNetwork'; //CreditsNetwork or testnet-r4_2 or DevsDappsTestnet
+    model.PublicKey = '<your public key>';
+    model.PrivateKey = '<your private key>';
+    model.JavaCode = '' +
+        'import com.credits.scapi.annotations.Getter;' +
+        'import com.credits.scapi.v0.SmartContract;' +
+        'import com.google.gson.*;' +
+
+        'public class CryptoBattle extends SmartContract' +
+        '{' +
+        '    public String payable(BigDecimal amount, byte[] userData)' +
+        '...' +
+        '...' +
+        '...' +
+        '}';
+            
+    $.ajax({
+        type: "POST",
+        url: "/Api/DeploySmartContract",
+        data: JSON.stringify(model),
+        contentType: "application/json; charset=utf-8",
+        dataType: "json",
+        success: function (response) {
+            if (response.IsSuccess) {
+                alert('Smart contract address: ' + response.Address);
+            } else {
+                alert('Error: ' + response.Message);
+            }                    
+        }
+    });
+});
+</code>
