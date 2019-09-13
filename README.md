@@ -63,7 +63,7 @@ http://descheduler.com/Api/AddNewTask?apiKey="YourApiKey"&name="Test3"&network="
 </br></br>
 
 <h2>/Api/DeploySmartContract - создать новый смарт контракт</h2>
-Для создания нового контракта необходимо отправить post запрос по адресу http://descheduler.com/Api/DeploySmartContract и передать json объект с 4-мя параметрами:
+Для создания нового контракта необходимо отправить post запрос по адресу http://descheduler.com/Api/DeploySmartContract и передать в теле запроса json-объект с 4-мя параметрами:
 <ul>
     <li><b>Network</b> - может быть одним из трех значений: 'CreditsNetwork' или 'testnet-r4_2' или 'DevsDappsTestnet'</li>
     <li><b>PublicKey</b> - публичный ключ вашего кошелька</li>
@@ -71,10 +71,10 @@ http://descheduler.com/Api/AddNewTask?apiKey="YourApiKey"&name="Test3"&network="
     <li><b>JavaCode</b> - java код вашего смарт контракта</li>    
 </ul>
     
-В ответе будет возвращен json объект с 3-мя параметрами:
+В ответе будет возвращен json-объект с 3-мя параметрами:
 <ul>
     <li><b>IsSuccess</b> - если смарт контракт добавлен, то значение равно true, иначе false</li>
-    <li><b>Address</b> - если смарт контракт добавлен, то значение будет содержать адрес контракта, иначе empty</li> 
+    <li><b>Address</b> - если смарт контракт добавлен, то значение будет содержать адрес контракта</li> 
     <li><b>Message</b> - если смарт контракт добавлен, то значение равно 'Ok', иначе описание ошибки</li> 
 </ul>
     
