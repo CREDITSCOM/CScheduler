@@ -191,6 +191,7 @@ namespace CScheduler.Controllers
                                                     smartJob.IsActive = true;
                                                     smartJob.Method = model.Method;
                                                     smartJob.Address = model.Address;
+                                                    smartJob.IsDeleted = false;
                                                     smartJob.DeleteTaskAfterExecution = model.DeleteTaskAfterExecution == "1";
                                                     smartJob.CreditsNet = dbContext.CreditsNets.FirstOrDefault(x => x.Name == model.Network);
                                                     smartJob.ExecutionMode = CheckExecutionMode(model.ExecutionMode);
