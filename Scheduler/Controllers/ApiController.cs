@@ -3,6 +3,7 @@ using Credtis_Api_Connect.Model;
 using CScheduler.Classes.Database;
 using System;
 using System.Collections.Generic;
+using System.Data.Entity.Validation;
 using System.Globalization;
 using System.Linq;
 using System.Threading;
@@ -220,6 +221,21 @@ namespace CScheduler.Controllers
                         }
                     }
                 }
+            }
+            catch (DbEntityValidationException err)
+            {
+                var outputLines = new List<string>();
+
+                foreach (var eve in err.EntityValidationErrors)
+                {
+                    outputLines.Add(
+                        $"{DateTime.Now}: Entity of type \"{eve.Entry.Entity.GetType().Name}\" in state \"{eve.Entry.State}\" has the following validation errors:");
+                    outputLines.AddRange(eve.ValidationErrors.Select(ve =>
+                        $"- Property: \"{ve.PropertyName}\", Error: \"{ve.ErrorMessage}\""));
+                }
+
+                result.IsSuccess = false;
+                result.Message = String.Join(", ", outputLines.ToArray());
             }
             catch (Exception err)
             {
