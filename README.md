@@ -19,47 +19,125 @@
 </br></br>
 # API
 <h2>/Api/AddNewTask - добавление новой задачи</h2>
-Для программного добавления задач можно использовать API по адресу http://descheduler.com/Api/AddNewTask
-Список параметров:
+Для добавления новой задачи необходимо отправить post запрос по адресу http://descheduler.com/Api/AddNewTask и передать в теле запроса json-объект с параметрами.
+Обязательные параметры:
 <ul>
-<li><b>apiKey</b> (обязательный) - ваш API ключ. При регистрации на сайте http://descheduler.com вам автоматически присваивается уникальный ключ. Найти ключ можно в личном кабинете (Menu - My account - Personal data)</li>
-<li><b>name</b> (обязательный) - наименование задачи. Тип строка.</li>
-<li><b>network</b> (обязательный) - сеть, в которой находится ваш смарт контракт. Тип строка. Может принимать одно из трех значений: "CreditsNetwork", "DevsDappsTestnet" или "testnet-r4_2".</li>
-<li><b>method</b> (обязательный) - публичный метод в смарт контракте, который вы собираетесь вызывать в запланированное время. Тип строка. Например: "executeRound". Указывается без скобок.</li>
-<li><b>address</b> (обязательный) - адрес смарт контракта. Тип строка. Например: "GVGAFSYAsTSfnnAZuHzHL43q9UpbvpEZzKn2VmfaMcEH".</li>
-<li><b>executionMode</b> (обязательный) - периодичность с которой будет вызываться вышеуказанные метод (method) в смарт контракте. Тип строка. Может принимать одно из трех значений:</li>
+<li><b>ApiKey</b> - ваш API ключ. При регистрации на сайте http://descheduler.com вам автоматически присваивается уникальный ключ. Найти ключ можно в личном кабинете (Menu - My account - Personal data)</li>
+<li><b>Name</b> - наименование задачи. Тип строка.</li>
+<li><b>Network</b> - сеть, в которой находится ваш смарт контракт. Тип строка. Может принимать одно из трех значений: "CreditsNetwork", "DevsDappsTestnet" или "testnet-r4_2".</li>
+<li><b>Method</b> - публичный метод в смарт контракте, который вы собираетесь вызывать в запланированное время. Тип строка. Например: "executeRound". Указывается без скобок.</li>
+<li><b>Address</b> - адрес смарт контракта. Тип строка. Например: "GVGAFSYAsTSfnnAZuHzHL43q9UpbvpEZzKn2VmfaMcEH".</li>
+<li><b>ExecutionMode</b> - периодичность с которой будет вызываться вышеуказанные метод (method) в смарт контракте. Тип строка. Может принимать одно из четырех значений:</li>
     <ul>
     <li><b>Regular</b> - задача будет выполняться регулярно</li>
     <li><b>Once</b> - задача будет выполнена единожды в строго указанное время</li>
+    <li><b>InSeconds</b> - задача будет выполнена единожды через указанное количество секунд с момента выполнения запроса. Количество секунд указывается в параметре <b>InSecondsValue</b></li>
     <li><b>CronExpression</b> - выражение в формате Cron. Например: "0,11 0,2,34 0,15 6 APR ? *". Данное выражение можно сформировать автоматически, используя какой-либо онлайн-сервис, например, <a href="https://www.freeformatter.com/cron-expression-generator-quartz.html">freeformatter.com</a></li>
 </ul>
 </ul>
     
-Заполнение других параметров зависит от того какой <b>executionMode</b> используется.</br>
-Вариант 1. Если <b>executionMode</b>="Regular", то необходимо передать еще 4 параметра:
+Передача других параметров зависит от того какой <b>ExecutionMode</b> используется.</br>
+Вариант 1. Если <b>ExecutionMode</b>="Regular", то необходимо передать еще 4 параметра:
     <ul>
-    <li><b>regularDateFrom</b> - дата начала выполнения в формате "ММ-ДД-ГГГГ-ЧЧ-ММ-СС". Тип строка.</li>
-    <li><b>regularDateTo</b> - дата окончания выполнения в формате "ММ-ДД-ГГГГ-ЧЧ-ММ-СС". Тип строка.</li>
-    <li><b>regularPeriod</b> - периодичность. Может принимать 1 из трех значений: "Days", "Hours" или "Minutes". Тип строка.</li>
-    <li><b>regularValue</b> - частота выполнения. Тип строка. Целочисленное значение. Например: 1, 3, 5, 10.</li>
+    <li><b>RegularDateFrom</b> - дата начала выполнения в формате "ММ-ДД-ГГГГ-ЧЧ-ММ-СС". Тип строка.</li>
+    <li><b>RegularDateTo</b> - дата окончания выполнения в формате "ММ-ДД-ГГГГ-ЧЧ-ММ-СС". Тип строка.</li>
+    <li><b>RegularPeriod</b> - периодичность. Может принимать 1 из трех значений: "Days", "Hours" или "Minutes". Тип строка.</li>
+    <li><b>RegularValue</b> - частота выполнения. Тип строка. Целочисленное значение. Например: 1, 3, 5, 10.</li>
     </ul>
-Вариант 2. Если <b>executionMode</b>="Once", то необходимо передать еще 1 параметр:
+Вариант 2. Если <b>ExecutionMode</b>="Once", то необходимо передать еще 1 параметр:
     <ul>
-    <li><b>onceDate</b> - дата выполнения в формате "ММ-ДД-ГГГГ-ЧЧ-ММ-СС"</li>
+    <li><b>OnceDate</b> - дата выполнения в формате "ММ-ДД-ГГГГ-ЧЧ-ММ-СС"</li>
     </ul>
-Вариант 3. Если <b>executionMode</b>="CronExpression", то необходимо передать еще 1 параметр:
+Вариант 3. Если <b>ExecutionMode</b>="InSeconds", то необходимо передать еще 1 параметр:
     <ul>
-    <li><b>cronExpression</b> - выражение в формате Cron</li>
+    <li><b>InSecondsValue</b> - количество секунд через которое необходимо выполнить задание. Отсчет начинается с момента вызова данного запроса. Например, если InSecondsValue=60, то задание будет выполнено через 1 минуту после выполнения запроса.</li>
+    </ul>    
+Вариант 4. Если <b>ExecutionMode</b>="CronExpression", то необходимо передать еще 1 параметр:
+    <ul>
+    <li><b>CronExpression</b> - выражение в формате Cron</li>
     </ul>
     
-Пример 1. Метод <b>executeRound</b> в смарт контракте по адресу GVGAFSYAsTSfnnAZuHzHL43q9UpbvpEZzKn2VmfaMcEH будет вызываться с 1-го января по 31-е декабря каждые 3 часа.
-http://descheduler.com/Api/AddNewTask?apiKey="YourApiKey"&name="Test1"&network="DevsDappsTestnet"&method="executeRound"&address="GVGAFSYAsTSfnnAZuHzHL43q9UpbvpEZzKn2VmfaMcEH"&executionMode="Regular"&regularDateFrom="01-01-2019-01-01-01"&regularDateTo="12-31-2019-23-59-59"&regularPeriod="Hours"&regularValue="3"
+Пример 1. Метод <b>ExecuteRound</b> в смарт контракте по адресу GVGAFSYAsTSfnnAZuHzHL43q9UpbvpEZzKn2VmfaMcEH будет вызываться с 1-го января по 31-е декабря каждые 3 часа.
+    
+    let model = new Object();
+    model.ApiKey = <YourApiKey>;
+    model.Name = "Test1";
+    model.Network = 'DevsDappsTestnet'; //CreditsNetwork or testnet-r4_2 or DevsDappsTestnet
+    model.Method = 'executeRound';
+    model.Address = GVGAFSYAsTSfnnAZuHzHL43q9UpbvpEZzKn2VmfaMcEH;
+    model.ExecutionMode = 'Regular';
+    model.RegularDateFrom = '01-01-2019-01-01-01';
+    model.RegularDateTo = '12-31-2019-23-59-59';
+    model.RegularPeriod = 'Hours';
+    model.RegularValue = '3';
+    
+    $.ajax({
+        type: "POST",
+        url: "http://descheduler.com/Api/AddNewTask",
+        data: JSON.stringify(model),
+        contentType: "application/json; charset=utf-8",
+        dataType: "json",
+        success: function (response) {
+            if (response.IsSuccess) {
+                alert('Action completed!');
+            } else {
+                alert('Error: ' + response.Message);
+            }                    
+        }
+    });
 
-Пример 2. Метод <b>executeRound</b> будет вызван единожды 31 декабря в 23:59:59
-http://descheduler.com/Api/AddNewTask?apiKey="YourApiKey"&name="Test2"&network="testnet-r4_2"&method="executeRound"&address="GVGAFSYAsTSfnnAZuHzHL43q9UpbvpEZzKn2VmfaMcEH"&executionMode="Once"&onceDate="12-31-2019-23-59-59"
+Пример 2. Метод <b>ExecuteRound</b> будет вызван единожды 31 декабря в 23:59:59
 
+    let model = new Object();
+    model.ApiKey = <YourApiKey>;
+    model.Name = "Test2";
+    model.Network = 'DevsDappsTestnet'; //CreditsNetwork or testnet-r4_2 or DevsDappsTestnet
+    model.Method = 'executeRound';
+    model.Address = GVGAFSYAsTSfnnAZuHzHL43q9UpbvpEZzKn2VmfaMcEH;
+    model.ExecutionMode = 'Once';
+    model.OnceDate = '12-31-2019-23-59-59';
+    
+    $.ajax({
+        type: "POST",
+        url: "http://descheduler.com/Api/AddNewTask",
+        data: JSON.stringify(model),
+        contentType: "application/json; charset=utf-8",
+        dataType: "json",
+        success: function (response) {
+            if (response.IsSuccess) {
+                alert('Action completed!');
+            } else {
+                alert('Error: ' + response.Message);
+            }                    
+        }
+    });
+    
 Пример 3. Метод <b>executeRound</b> будет вызываться согласно расписанию, закодированному в формате cron
-http://descheduler.com/Api/AddNewTask?apiKey="YourApiKey"&name="Test3"&network="CreditsNetwork"&method="executeRound"&address="GVGAFSYAsTSfnnAZuHzHL43q9UpbvpEZzKn2VmfaMcEH"&executionMode="CronExpression"&cronExpression="0,11 0,2,34 0,15 6 APR ? *"
+
+    let model = new Object();
+    model.ApiKey = <YourApiKey>;
+    model.Name = "Test3";
+    model.Network = 'DevsDappsTestnet'; //CreditsNetwork or testnet-r4_2 or DevsDappsTestnet
+    model.Method = 'executeRound';
+    model.Address = GVGAFSYAsTSfnnAZuHzHL43q9UpbvpEZzKn2VmfaMcEH;
+    model.ExecutionMode = 'CronExpression';
+    model.CronExpression = '0,11 0,2,34 0,15 6 APR ? *';
+    
+    $.ajax({
+        type: "POST",
+        url: "http://descheduler.com/Api/AddNewTask",
+        data: JSON.stringify(model),
+        contentType: "application/json; charset=utf-8",
+        dataType: "json",
+        success: function (response) {
+            if (response.IsSuccess) {
+                alert('Action completed!');
+            } else {
+                alert('Error: ' + response.Message);
+            }                    
+        }
+    });
+    
 </br></br>
 
 <h2>/Api/DeploySmartContract - создать новый смарт контракт</h2>
