@@ -10,7 +10,7 @@ using System.Web.Mvc;
 namespace CScheduler.Classes.Database
 {
     [Table(name: "SmartJobs")]
-    public class SmartJob: IJob
+    public class SmartJob : IJob
     {
         [Key]
         public int ID { get; set; }
@@ -44,7 +44,7 @@ namespace CScheduler.Classes.Database
 
         [Display(Name = "Execution mode")]
         public ExecutionModeEnum ExecutionMode { get; set; }
-        
+
         [Display(Name = "Errors")]
         public int Errors { get; set; }
 
@@ -53,6 +53,11 @@ namespace CScheduler.Classes.Database
 
         [Display(Name = "Events")]
         public List<JobEvent> Events { get; set; }
+
+        [Display(Name = "Delete task after execution")]
+        public bool DeleteTaskAfterExecution { get; set; }
+
+        public bool IsDeleted { get; set; }
 
         [NotMapped]
         public IEnumerable<SelectListItem> CreditsNetList

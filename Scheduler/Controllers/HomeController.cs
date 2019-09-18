@@ -51,11 +51,11 @@ namespace CScheduler.Controllers
 
                     if (userManager.IsInRole(userId, "Admin"))
                     {
-                        model = dbContext.SmartJobs.Include("Rule").Include("CreditsNet").Include("CreatedBy").ToList();
+                        model = dbContext.SmartJobs.Include("Rule").Include("CreditsNet").Include("CreatedBy").Where(x => x.IsDeleted != true).ToList();
                     }
                     else
                     {
-                        model = dbContext.SmartJobs.Include("Rule").Include("CreditsNet").Include("CreatedBy").Where(x => x.CreatedBy.Id == userId).ToList();
+                        model = dbContext.SmartJobs.Include("Rule").Include("CreditsNet").Include("CreatedBy").Where(x => x.CreatedBy.Id == userId && x.IsDeleted != true).ToList();
                     }
                 }
 

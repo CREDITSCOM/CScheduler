@@ -1,4 +1,6 @@
 ﻿using CScheduler.Classes.Database;
+using Microsoft.AspNet.Identity;
+using Microsoft.Owin.Security;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -14,7 +16,14 @@ namespace CScheduler.Controllers
         {
             using (var dbContext = new DatabaseContext())
             {
-                ViewBag.PrivateKey = dbContext.Users.FirstOrDefault(x => x.PublicKey == PublicKey)?.PrivateKey;
+                if (!User.IsInRole("Admin"))
+                {
+                    ViewBag.PrivateKey = dbContext.Users.FirstOrDefault(x => x.PublicKey == PublicKey)?.PrivateKey;
+                }
+                else
+                {
+                    ViewBag.PrivateKey = "You don't have a permission.";
+                }                    
             }
 
             return View();

@@ -177,6 +177,13 @@ namespace CScheduler.Classes.Database
 
                         //Пишем лог
                         await AddEvent(SmartJobID, "Task completed");
+
+                        //Помечаем на удаление, если установлен флаг
+                        if (smartJob.DeleteTaskAfterExecution == true)
+                        {
+                            smartJob.IsDeleted = true;
+                            await dbContext.SaveChangesAsync();
+                        }
                     }
                 }
             }

@@ -65,7 +65,7 @@ namespace CScheduler.Controllers
             };
         }
 
-        public async Task<JsonResult> AddNewTask(string apiKey = "", string name = "", string network = "", string method = "", string address = "", string executionMode = "", string regularDateFrom = "", string regularDateTo = "", string regularPeriod = "", string regularValue = "", string onceDate = "", string cronExpression = "")
+        public async Task<JsonResult> AddNewTask(NewTaskModel model)
         {
             var result = new ApiJsonResult();
 
@@ -73,7 +73,7 @@ namespace CScheduler.Controllers
             {
                 using (var dbContext = new DatabaseContext())
                 {
-                    var user = dbContext.Users.FirstOrDefault(x => x.ApiKey == apiKey);
+                    var user = dbContext.Users.FirstOrDefault(x => x.ApiKey == model.ApiKey);
                     if (user == null)
                     {
                         result.IsSuccess = false;
@@ -81,80 +81,94 @@ namespace CScheduler.Controllers
                     }
                     else
                     {
-                        if (string.IsNullOrEmpty(name))
+                        if (string.IsNullOrEmpty(model.Name))
                         {
                             result.IsSuccess = false;
                             result.Message = "The name value is required";
                         }
                         else
                         {
-                            if (string.IsNullOrEmpty(network))
+                            if (string.IsNullOrEmpty(model.Network))
                             {
                                 result.IsSuccess = false;
                                 result.Message = "The network value is required";
                             }
                             else
                             {
-                                if (network != "testnet-r4_2" && network != "DevsDappsTestnet" && network != "CreditsNetwork")
+                                if (model.Network != "testnet-r4_2" && model.Network != "DevsDappsTestnet" && model.Network != "CreditsNetwork")
                                 {
                                     result.IsSuccess = false;
                                     result.Message = "The network value is wrong. Supported values: 'testnet-r4_2', 'DevsDappsTestnet', 'CreditsNetwork'";
                                 }
                                 else
                                 {
-                                    if (string.IsNullOrEmpty(method))
+                                    if (string.IsNullOrEmpty(model.Method))
                                     {
                                         result.IsSuccess = false;
                                         result.Message = "The method value is required";
                                     }
                                     else
                                     {
-                                        if (string.IsNullOrEmpty(address))
+                                        if (string.IsNullOrEmpty(model.Address))
                                         {
                                             result.IsSuccess = false;
                                             result.Message = "The address value is required";
                                         }
                                         else
                                         {
-                                            if (string.IsNullOrEmpty(executionMode))
+                                            if (string.IsNullOrEmpty(model.ExecutionMode))
                                             {
                                                 result.IsSuccess = false;
                                                 result.Message = "The executionMode value is required";
                                             }
                                             else
                                             {
-                                                if (executionMode == "Regular")
+                                                if (model.ExecutionMode == "Regular")
                                                 {
-                                                    if (CheckDate(regularDateFrom) == DateTime.MinValue)
+                                                    if (CheckDate(model.RegularDateFrom) == DateTime.MinValue)
                                                     {
                                                         result.IsSuccess = false;
                                                         result.Message = "The regularDateFrom value is wrong. Supported mask: mm-DD-YYYY-hh-MM-ss";
                                                     }
-                                                    else if (CheckDate(regularDateTo) == DateTime.MinValue)
+                                                    else if (CheckDate(model.RegularDateTo) == DateTime.MinValue)
                                                     {
                                                         result.IsSuccess = false;
                                                         result.Message = "The regularDateTo value is wrong. Supported mask: mm-DD-YYYY-hh-MM-ss";
                                                     }
-                                                    else if (CheckPeriodName(regularPeriod) == 0)
+                                                    else if (CheckPeriodName(model.RegularPeriod) == 0)
                                                     {
                                                         result.IsSuccess = false;
                                                         result.Message = "The regularPeriod value is wrong. Supported values: 'Minutes', 'Hours', 'Days'";
                                                     }
-                                                    else if (CheckPeriodValue(regularValue) == 0)
+                                                    else if (CheckPeriodValue(model.RegularValue) == 0)
                                                     {
                                                         result.IsSuccess = false;
                                                         result.Message = "The regularValue value is wrong. Supported values: 1, 2, 3, and so on...";
                                                     }
                                                 }
-                                                else if (executionMode == "Once")
+                                                else if (model.ExecutionMode == "Once")
                                                 {
-                                                    if (CheckDate(onceDate) == DateTime.MinValue)
+                                                    if (CheckDate(model.OnceDate) == DateTime.MinValue)
                                                     {
                                                         result.IsSuccess = false;
                                                         result.Message = "The onceDate value is wrong. Supported mask: mm-DD-YYYY-hh-MM-ss";
                                                     }
                                                 }
-                                                else if (executionMode == "CronExpression")
+                                                else if (model.ExecutionMode == "InSeconds")
+                                                {
+                                                    if (CheckInSeconds(model.InSecondsValue) == false)
+                                                    {
+                                                        result.IsSuccess = false;
+                                                        result.Message = "The InSecondsValue value is wrong. Value must be integer value";
+                                                    }
+                                                    else
+                                                    {
+                                                        var seconds = Convert.ToInt32(model.InSecondsValue);
+                                                        var dateExecution = DateTime.Now.AddSeconds(seconds);
+                                                        model.OnceDate = dateExecution.ToString("MM/dd/yyyy HH:mm:ss");
+                                                    }
+                                                }
+                                                else if (model.ExecutionMode == "CronExpression")
                                                 {
 
                                                 }
@@ -173,18 +187,19 @@ namespace CScheduler.Controllers
                                                     smartJob.CreatedAt = DateTime.Now;
                                                     smartJob.Rule = new Rule();
                                                     smartJob.Events = new List<JobEvent>();
-                                                    smartJob.Name = name;
+                                                    smartJob.Name = model.Name;
                                                     smartJob.IsActive = true;
-                                                    smartJob.Method = method;
-                                                    smartJob.Address = address;
-                                                    smartJob.CreditsNet = dbContext.CreditsNets.FirstOrDefault(x => x.Name == network);
-                                                    smartJob.ExecutionMode = CheckExecutionMode(executionMode);
-                                                    smartJob.Rule.RegularDateFrom = CheckDate(regularDateFrom).ToString("MM/dd/yyyy HH:mm:ss");
-                                                    smartJob.Rule.RegularDateTo = CheckDate(regularDateTo).ToString("MM/dd/yyyy HH:mm:ss");
-                                                    smartJob.Rule.RegularPeriod = ConvertPeriod(regularPeriod);
-                                                    smartJob.Rule.RegularValue = CheckPeriodValue(regularValue);
-                                                    smartJob.Rule.OnceDate = CheckDate(onceDate).ToString("MM/dd/yyyy HH:mm:ss");
-                                                    smartJob.Rule.CronExpression = cronExpression;
+                                                    smartJob.Method = model.Method;
+                                                    smartJob.Address = model.Address;
+                                                    smartJob.DeleteTaskAfterExecution = model.DeleteTaskAfterExecution == "1";
+                                                    smartJob.CreditsNet = dbContext.CreditsNets.FirstOrDefault(x => x.Name == model.Network);
+                                                    smartJob.ExecutionMode = CheckExecutionMode(model.ExecutionMode);
+                                                    smartJob.Rule.RegularDateFrom = CheckDate(model.RegularDateFrom).ToString("MM/dd/yyyy HH:mm:ss");
+                                                    smartJob.Rule.RegularDateTo = CheckDate(model.RegularDateTo).ToString("MM/dd/yyyy HH:mm:ss");
+                                                    smartJob.Rule.RegularPeriod = ConvertPeriod(model.RegularPeriod);
+                                                    smartJob.Rule.RegularValue = CheckPeriodValue(model.RegularValue);
+                                                    smartJob.Rule.OnceDate = CheckDate(model.OnceDate).ToString("MM/dd/yyyy HH:mm:ss");
+                                                    smartJob.Rule.CronExpression = model.CronExpression;
                                                     smartJob.Rule.Presentation = Rule.GeneratePresentation(smartJob);
 
                                                     dbContext.SmartJobs.Add(smartJob);
@@ -219,22 +234,24 @@ namespace CScheduler.Controllers
             };
         }
 
-        private string GetIP(int NetworkID)
+        private string GetIP(string Network)
         {
-            //CreditsNetwork
-            if (NetworkID == 1)
+            if (Network == "CreditsNetwork")
                 return "161.156.96.26";
 
-            //testnet-r4_2
-            else if (NetworkID == 2)
+            else if (Network == "testnet-r4_2")
                 return "89.111.33.169";
 
-            //DevsDappsTestnet
-            else
+            else if (Network == "DevsDappsTestnet")
                 return "161.156.96.22";
+
+            else
+                return null;
         }
 
-        public async Task<JsonResult> DeploySmartContract(DeployModel model)
+        [HttpPost]
+        [AllowAnonymous]
+        public JsonResult DeploySmartContract(DeployModel model)
         {
             var result = new ApiJsonResult();
 
@@ -242,13 +259,17 @@ namespace CScheduler.Controllers
             {
                 using (var dbContext = new DatabaseContext())
                 {
-                    var email = User?.Identity?.Name;
-                    if (!string.IsNullOrEmpty(email))
+                    var networkIP = GetIP(model.Network);
+
+                    if (!string.IsNullOrEmpty(networkIP))
                     {
-                        var user = dbContext.Users.FirstOrDefault(x => x.Email == email);
-                        var publicKey = "6msdfZdDj9nwRGuDBoyUFRaXnP7tmG117BPx7tdvUjsm"; //user.PublicKey;
-                        var privateKey = "54tZoXaDa38n8rbg1BGrDMVBSP12TGcyE7UNvDQfD7w1uEMYCzdv7bpDycgiPwNd92opbZh94kVmArVoW4YFDF4j";  //user.PrivateKey;
-                        var networkIP = GetIP(model.NetworkID);
+                        if (string.IsNullOrEmpty(model.PublicKey) || string.IsNullOrEmpty(model.PrivateKey))
+                        {
+                            var email = User?.Identity?.Name;
+                            var user = dbContext.Users.FirstOrDefault(x => x.Email == email);
+                            model.PublicKey = user?.PublicKey;
+                            model.PrivateKey = user?.PrivateKey;
+                        }
 
                         using (Work work = new Work(networkIP))
                         {
@@ -256,25 +277,83 @@ namespace CScheduler.Controllers
                             {
                                 Amount = "0",
                                 Fee = "1",
-                                Source = publicKey,
-                                Smart = new SmartCreateModel
-                                {
-                                    Code = model.JavaCode
-                                }
-                            }), Base58Check.Base58CheckEncoding.DecodePlain(privateKey));
+                                Source = model.PublicKey,
+                                Smart = new SmartCreateModel { Code = model.JavaCode }
+                            }), Base58Check.Base58CheckEncoding.DecodePlain(model.PrivateKey));
 
                             var source = Base58Check.Base58CheckEncoding.EncodePlain(transaction.Source);
                             var target = Base58Check.Base58CheckEncoding.EncodePlain(transaction.Target);
 
                             result.IsSuccess = true;
-                            result.Data = target;
+                            result.Address = target;
                             result.Message = "Ok!";
                         }
                     }
                     else
                     {
                         result.IsSuccess = false;
-                        result.Message = "User is not registered.";
+                        result.Message = "Network is wrong.";
+                    }                        
+                }
+            }
+            catch (Exception err)
+            {
+                result.IsSuccess = false;
+                result.Message = "Error: " + err.ToString();
+            }
+
+            return new JsonResult
+            {
+                MaxJsonLength = Int32.MaxValue,
+                Data = result,
+                JsonRequestBehavior = JsonRequestBehavior.AllowGet
+            };
+        }
+
+        [HttpPost]
+        [AllowAnonymous]
+        public JsonResult DeploySmartContracts(DeployModel model)
+        {
+            var result = new ApiJsonResult();
+
+            try
+            {
+                using (var dbContext = new DatabaseContext())
+                {
+                    var networkIP = GetIP(model.Network);
+
+                    if (!string.IsNullOrEmpty(networkIP))
+                    {
+                        if (string.IsNullOrEmpty(model.PublicKey) || string.IsNullOrEmpty(model.PrivateKey))
+                        {
+                            var email = User?.Identity?.Name;
+                            var user = dbContext.Users.FirstOrDefault(x => x.Email == email);
+                            model.PublicKey = user?.PublicKey;
+                            model.PrivateKey = user?.PrivateKey;
+                        }
+
+                        using (Work work = new Work(networkIP))
+                        {
+                            var transaction = work.Api.SendTransaction<CreateTransactionModel>(new CreateTransactionModel(new TransactionCreateModel
+                            {
+                                Amount = "0",
+                                Fee = "1",
+                                Source = model.PublicKey,
+                                Smart = new SmartCreateModel { Code = model.JavaCode }
+                            }), Base58Check.Base58CheckEncoding.DecodePlain(model.PrivateKey));
+
+                            var source = Base58Check.Base58CheckEncoding.EncodePlain(transaction.Source);
+                            var target = Base58Check.Base58CheckEncoding.EncodePlain(transaction.Target);
+
+                            result.IsSuccess = true;
+                            result.Address = target;
+                            result.Message = "Ok!";
+                        }
+                    }
+                    else
+                    {
+                        result.IsSuccess = false;
+                        result.Message = "Network is wrong.";
                     }
                 }
             }
@@ -310,6 +389,12 @@ namespace CScheduler.Controllers
             {
                 return DateTime.MinValue;
             }
+        }
+
+        private bool CheckInSeconds(string value)
+        {
+            int ignoreMe;
+            return int.TryParse(value, out ignoreMe);
         }
 
         private int CheckPeriodName(string periodName)
@@ -365,13 +450,33 @@ namespace CScheduler.Controllers
         {
             public bool IsSuccess { get; set; }
             public string Message { get; set; }
-            public object Data { get; set; }
+            public object Address { get; set; }
         }
 
         public class DeployModel
         {
             public string JavaCode { get; set; }
-            public int NetworkID { get; set; }
+            public string Network { get; set; }
+            public string PublicKey { get; set; }
+            public string PrivateKey { get; set; }
+        }
+
+        public class NewTaskModel
+        {
+            public string ApiKey { get; set; }
+            public string Name { get; set; }
+            public string Network { get; set; }
+            public string Method { get; set; }
+            public string Address { get; set; }
+            public string ExecutionMode { get; set; }
+            public string RegularDateFrom { get; set; }
+            public string RegularDateTo { get; set; }
+            public string RegularPeriod { get; set; }
+            public string RegularValue { get; set; }
+            public string OnceDate { get; set; }
+            public string CronExpression { get; set; }
+            public string InSecondsValue { get; set; }
+            public string DeleteTaskAfterExecution { get; set; }
         }
     }
 }
