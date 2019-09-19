@@ -316,7 +316,7 @@ namespace CScheduler.Controllers
             catch (Exception err)
             {
                 result.IsSuccess = false;
-                result.Message = "Error: " + err.ToString();
+                result.Message = "Error: " + err.Message;
             }
 
             return new JsonResult
@@ -377,7 +377,7 @@ namespace CScheduler.Controllers
             catch (Exception err)
             {
                 result.IsSuccess = false;
-                result.Message = "Error: " + err.ToString();
+                result.Message = "Error: " + err.Message;
             }
 
             return new JsonResult
