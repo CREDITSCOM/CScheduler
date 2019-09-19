@@ -139,6 +139,32 @@
         }
     });
     
+Пример 4. Метод <b>executeRound</b> будет вызыван один раз через 15 минут после создания задачи.
+
+    let model = new Object();
+    model.ApiKey = <YourApiKey>;
+    model.Name = "Test4";
+    model.Network = 'DevsDappsTestnet'; //CreditsNetwork or testnet-r4_2 or DevsDappsTestnet
+    model.Method = 'executeRound';
+    model.Address = GVGAFSYAsTSfnnAZuHzHL43q9UpbvpEZzKn2VmfaMcEH;
+    model.ExecutionMode = 'InSeconds';
+    model.InSecondsValue = '900'; //15 мин * 60 сек в 1 мин = 900 сек
+    
+    $.ajax({
+        type: "POST",
+        url: "http://descheduler.com/Api/AddNewTask",
+        data: JSON.stringify(model),
+        contentType: "application/json; charset=utf-8",
+        dataType: "json",
+        success: function (response) {
+            if (response.IsSuccess) {
+                alert('Action completed!');
+            } else {
+                alert('Error: ' + response.Message);
+            }                    
+        }
+    });
+    
 </br></br>
 
 <h2>/Api/DeploySmartContract - создать новый смарт контракт</h2>
