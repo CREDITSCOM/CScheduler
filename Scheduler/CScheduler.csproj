@@ -210,9 +210,8 @@
     <Reference Include="Newtonsoft.Json">
       <HintPath>packages\Newtonsoft.Json.11.0.1\lib\net45\Newtonsoft.Json.dll</HintPath>
     </Reference>
-    <Reference Include="Thrift45, Version=1.0.0.1, Culture=neutral, processorArchitecture=MSIL">
-      <SpecificVersion>False</SpecificVersion>
-      <HintPath>..\packages\Thrift45.dll</HintPath>
+    <Reference Include="Thrift45">
+      <HintPath>packages\Thrift45.dll</HintPath>
     </Reference>
     <Reference Include="WebGrease">
       <Private>True</Private>
@@ -320,6 +319,10 @@
     <Compile Include="Migrations\201909091855164_up6.cs" />
     <Compile Include="Migrations\201909091855164_up6.Designer.cs">
       <DependentUpon>201909091855164_up6.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Migrations\201909182329599_up7.cs" />
+    <Compile Include="Migrations\201909182329599_up7.Designer.cs">
+      <DependentUpon>201909182329599_up7.cs</DependentUpon>
     </Compile>
     <Compile Include="Migrations\Configuration.cs" />
     <Compile Include="Models\AccountViewModels.cs" />
@@ -449,6 +452,7 @@
     <Content Include="Content\bootstrap\bootstrap.less" />
     <Content Include="Content\bootstrap\badges.less" />
     <Content Include="Content\bootstrap\alerts.less" />
+    <None Include="Properties\PublishProfiles\CustomProfile.pubxml" />
     <None Include="Properties\PublishProfiles\FolderProfile.pubxml" />
     <None Include="Scripts\jquery-3.3.1.intellisense.js" />
     <Content Include="Scripts\global.js" />
@@ -557,6 +561,9 @@
     </EmbeddedResource>
     <EmbeddedResource Include="Migrations\201909091855164_up6.resx">
       <DependentUpon>201909091855164_up6.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Migrations\201909182329599_up7.resx">
+      <DependentUpon>201909182329599_up7.cs</DependentUpon>
     </EmbeddedResource>
   </ItemGroup>
   <PropertyGroup>
