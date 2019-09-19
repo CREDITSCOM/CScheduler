@@ -67,6 +67,8 @@
             font-weight: bold;
             font-size: x-large;
             color: orange !important;
+            position: relative;
+            text-shadow: 1px 1px 2px #5b539e, 0 0 1em #d4cccc;
         }
 
         .navbar-nav {
@@ -141,13 +143,20 @@
             opacity: 1;
         }
 
+        .beta {
+            font-size: x-small;
+            position: absolute;
+            right: -27px;
+            top: 15px;
+            color: #5353e8;
+        }
     </style>
 
     <nav class="navbar navbar-expand-lg navbar-inverse navbar-light bg-light navbar-fixed-top">
         <div class="container">
             <a class="navbar-brand" href="\Home\Index">
                 <span class="sr-only"></span>
-                <i class="fab fa-2x fa-earlybirds"></i> CScheduler
+                <i class="fab fa-2x fa-earlybirds"></i> CScheduler<span class="beta"> beta</span>
             </a>
             @*<button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarNavDropdown" aria-controls="navbarNavDropdown" aria-expanded="false" aria-label="Toggle navigation">
                 <span class="navbar-toggler-icon"></span>
