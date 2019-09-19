@@ -166,7 +166,7 @@ namespace CScheduler.Controllers
                                                     {
                                                         var seconds = Convert.ToInt32(model.InSecondsValue);
                                                         var dateExecution = DateTime.Now.AddSeconds(seconds);
-                                                        model.OnceDate = dateExecution.ToString("MM/dd/yyyy HH:mm:ss");
+                                                        model.OnceDate = dateExecution.ToString("MM-dd-yyyy-HH-mm-ss");
                                                     }
                                                 }
                                                 else if (model.ExecutionMode == "CronExpression")
@@ -442,7 +442,7 @@ namespace CScheduler.Controllers
         {
             if (executionMode == "Regular")
                 return ExecutionModeEnum.Regular;
-            else if (executionMode == "Once")
+            else if (executionMode == "Once" || executionMode == "InSeconds")
                 return ExecutionModeEnum.Once;
             else
                 return ExecutionModeEnum.CronExpression;
