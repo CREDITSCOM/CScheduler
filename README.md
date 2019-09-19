@@ -51,13 +51,14 @@
 Вариант 3. Если <b>ExecutionMode</b>="InSeconds", то необходимо передать еще 1 параметр:
     <ul>
     <li><b>InSecondsValue</b> - количество секунд через которое необходимо выполнить задание. Отсчет начинается с момента вызова данного запроса. Например, если InSecondsValue=60, то задание будет выполнено через 1 минуту после выполнения запроса.</li>
-    </ul>    
+    </ul>
 Вариант 4. Если <b>ExecutionMode</b>="CronExpression", то необходимо передать еще 1 параметр:
     <ul>
     <li><b>CronExpression</b> - выражение в формате Cron</li>
     </ul>
+    </br></br>
     
-Пример 1. Метод <b>ExecuteRound</b> в смарт контракте по адресу GVGAFSYAsTSfnnAZuHzHL43q9UpbvpEZzKn2VmfaMcEH будет вызываться с 1-го января по 31-е декабря каждые 3 часа.
+Пример 1. Метод <b>executeRound</b> в смарт контракте по адресу GVGAFSYAsTSfnnAZuHzHL43q9UpbvpEZzKn2VmfaMcEH будет вызываться с 1-го января по 31-е декабря каждые 3 часа, начиная с 01:01:01.
     
     let model = new Object();
     model.ApiKey = <YourApiKey>;
@@ -86,7 +87,7 @@
         }
     });
 
-Пример 2. Метод <b>ExecuteRound</b> будет вызван единожды 31 декабря в 23:59:59
+Пример 2. Метод <b>executeRound</b> будет вызван единожды 31 декабря в 23:59:59
 
     let model = new Object();
     model.ApiKey = <YourApiKey>;
