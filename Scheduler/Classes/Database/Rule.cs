@@ -14,22 +14,22 @@ namespace CScheduler.Classes.Database
         public int ID { get; set; }
 
         [Display(Name = "Start date")]
-        [RegularExpression(@"^([0-3][0-9]+)\/([0-3][0-9]+)\/([2-3][0-9][0-9][0-9]+) ([0-2][0-9]+)\:([0-5][0-9]+)\:([0-5][0-9]+)$", ErrorMessage = "Wrong value")]
+        //[RegularExpression(@"^([0-3][0-9]+)\/([0-3][0-9]+)\/([2-3][0-9][0-9][0-9]+) ([0-2][0-9]+)\:([0-5][0-9]+)\:([0-5][0-9]+)$", ErrorMessage = "Wrong value")]
         public string RegularDateFrom { get; set; }
 
         [Display(Name = "End date")]
-        [RegularExpression(@"^([0-3][0-9]+)\/([0-3][0-9]+)\/([2-3][0-9][0-9][0-9]+) ([0-2][0-9]+)\:([0-5][0-9]+)\:([0-5][0-9]+)$", ErrorMessage = "Wrong value")]
+        //[RegularExpression(@"^([0-3][0-9]+)\/([0-3][0-9]+)\/([2-3][0-9][0-9][0-9]+) ([0-2][0-9]+)\:([0-5][0-9]+)\:([0-5][0-9]+)$", ErrorMessage = "Wrong value")]
         public string RegularDateTo { get; set; }
 
         [Display(Name = "Repeat every")]
-        [RegularExpression(@"^\d+$", ErrorMessage = "Wrong value")]
+        //[RegularExpression(@"^\d+$", ErrorMessage = "Wrong value")]
         public int RegularValue { get; set; }
 
         [Display(Name = "&nbsp;")]
         public PeriodEnum RegularPeriod { get; set; }
 
         [Display(Name = "Date & time")]
-        [RegularExpression(@"^([0-3][0-9]+)\/([0-3][0-9]+)\/([2-3][0-9][0-9][0-9]+) ([0-2][0-9]+)\:([0-5][0-9]+)\:([0-5][0-9]+)$", ErrorMessage = "Wrong value")]
+        //[RegularExpression(@"^([0-3][0-9]+)\/([0-3][0-9]+)\/([2-3][0-9][0-9][0-9]+) ([0-2][0-9]+)\:([0-5][0-9]+)\:([0-5][0-9]+)$", ErrorMessage = "Wrong value")]
         public string OnceDate { get; set; }
 
         [Display(Name = "Cron expression")]
