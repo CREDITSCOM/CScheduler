@@ -24,6 +24,8 @@ namespace CScheduler.Controllers
         [AllowAnonymous]
         public ActionResult Index()
         {
+            var str = DateTime.Now.ToString("MM/dd/yyyy HH:mm:ss");
+
             var identity = HttpContext.GetOwinContext().Authentication.GetExternalIdentity(DefaultAuthenticationTypes.ApplicationCookie);
 
             if (identity == null || identity.Name == null)

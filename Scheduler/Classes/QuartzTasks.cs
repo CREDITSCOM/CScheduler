@@ -58,8 +58,8 @@ namespace CScheduler.Classes.Database
                 //Режим: Регулярное выполнение
                 if (smartJob.ExecutionMode == SmartJob.ExecutionModeEnum.Regular)
                 {
-                    DateTime startAt = string.IsNullOrEmpty(smartJob.Rule.RegularDateFrom) ? DateTime.MinValue : DateTime.ParseExact(smartJob.Rule.RegularDateFrom, "MM/dd/yyyy HH:mm:ss", CultureInfo.InvariantCulture);
-                    DateTime endAt = string.IsNullOrEmpty(smartJob.Rule.RegularDateTo) ? DateTime.MaxValue : DateTime.ParseExact(smartJob.Rule.RegularDateTo, "MM/dd/yyyy HH:mm:ss", CultureInfo.InvariantCulture);
+                    DateTime startAt = string.IsNullOrEmpty(smartJob.Rule.RegularDateFrom) ? DateTime.MinValue : ConvertToDateTime(smartJob.Rule.RegularDateFrom);
+                    DateTime endAt = string.IsNullOrEmpty(smartJob.Rule.RegularDateTo) ? DateTime.MaxValue : ConvertToDateTime(smartJob.Rule.RegularDateTo);
                     var interval = 0;
                     if (smartJob.Rule.RegularValue > 0)
                     {
@@ -82,7 +82,7 @@ namespace CScheduler.Classes.Database
                 //Режим: Одноразовое выполнение
                 else if (smartJob.ExecutionMode == SmartJob.ExecutionModeEnum.Once)
                 {
-                    DateTime startAt = string.IsNullOrEmpty(smartJob.Rule.OnceDate) ? DateTime.MinValue : DateTime.ParseExact(smartJob.Rule.OnceDate, "MM/dd/yyyy HH:mm:ss", CultureInfo.InvariantCulture);
+                    DateTime startAt = string.IsNullOrEmpty(smartJob.Rule.OnceDate) ? DateTime.MinValue : ConvertToDateTime(smartJob.Rule.OnceDate);
 
                     trigger = TriggerBuilder.Create().StartAt(startAt).Build();
                 }
@@ -272,6 +272,18 @@ namespace CScheduler.Classes.Database
 
                 dbContext.JobEvents.Add(jobEvent);
                 await dbContext.SaveChangesAsync();
+            }
+        }
+
+        private static DateTime ConvertToDateTime(string Date)
+        {
+            try
+            {
+                return DateTime.ParseExact(Date, "MM/dd/yyyy HH:mm:ss", CultureInfo.InvariantCulture);
+            }
+            catch
+            {
+                return DateTime.ParseExact(Date, "MM.dd.yyyy HH:mm:ss", CultureInfo.InvariantCulture);
             }
         }
 
