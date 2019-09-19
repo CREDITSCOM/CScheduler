@@ -176,7 +176,7 @@ namespace CScheduler.Classes.Database
                         //Debug.WriteLine("smartJob.ID " + smartJobID.ToString());
 
                         //Пишем лог
-                        await AddEvent(SmartJobID, "Task completed: " + textResponse);
+                        await AddEvent(SmartJobID, "Task completed");
 
                         //Помечаем на удаление, если установлен флаг
                         if (smartJob.DeleteTaskAfterExecution == true)
