@@ -105,7 +105,7 @@ namespace CScheduler.Classes.Database
             catch (Exception err)
             {
                 //Пишем лог
-                await AddEvent(smartJob.ID, "StartJob error: " + err.Message);
+                await AddEvent(smartJob.ID, "StartJob error: " + err.Message + " Smart: " + JsonConvert.SerializeObject(smartJob));
             }
         }
 
